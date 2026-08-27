@@ -11,6 +11,7 @@
 
 <header>
     <div class="logo">MY PORTFOLIO</div>
+
     <nav>
         <a href="#home">HOME</a>
         <a href="#quiz">QUIZ</a>
@@ -28,6 +29,7 @@
         <div class="intro">
             <h1>Hi! It's Ellaine Joyce Sarcaoga.</h1>
             <h2>BSIT-3B</h2>
+
             <p>
                 I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
                 I love playing online games and listening to music
@@ -40,6 +42,7 @@
                 <a href="#" title="Facebook">
                     <img src="fb logo.webp" alt="Facebook">
                 </a>
+
                 <a href="#" title="Instagram">
                     <img src="insta.webp" alt="Instagram">
                 </a>
@@ -56,8 +59,13 @@
 
     <div class="upload-box">
         <label for="quizInput" class="upload-button">+ UPLOAD QUIZ</label>
+
         <input type="file" id="quizInput" class="file-input" multiple>
-        <p>PDF, pictures, screenshots, documents, and other file types are supported.</p>
+
+        <p>
+            PDF, pictures, screenshots, documents,
+            and other file types are supported.
+        </p>
     </div>
 
     <div class="file-list" id="quizList"></div>
@@ -70,9 +78,16 @@
     </div>
 
     <div class="upload-box">
-        <label for="laboratoryInput" class="upload-button">+ UPLOAD LABORATORY</label>
+        <label for="laboratoryInput" class="upload-button">
+            + UPLOAD LABORATORY
+        </label>
+
         <input type="file" id="laboratoryInput" class="file-input" multiple>
-        <p>PDF, pictures, screenshots, documents, ZIP files, and other file types are supported.</p>
+
+        <p>
+            PDF, pictures, screenshots, documents,
+            ZIP files, and other file types are supported.
+        </p>
     </div>
 
     <div class="file-list" id="laboratoryList"></div>
@@ -86,12 +101,23 @@
 
     <div class="upload-box">
         <label for="examInput" class="upload-button">+ UPLOAD EXAM</label>
+
         <input type="file" id="examInput" class="file-input" multiple>
-        <p>PDF, pictures, screenshots, documents, and other file types are supported.</p>
+
+        <p>
+            PDF, pictures, screenshots, documents,
+            and other file types are supported.
+        </p>
     </div>
 
     <div class="file-list" id="examList"></div>
 </section>
+
+<div class="restore-container">
+    <button class="restore-button" onclick="restoreDefaultFiles()">
+        RESTORE DEFAULT FILES
+    </button>
+</div>
 
 <footer>
     <p>© 2026 Ellaine Joyce Sarcaoga | BSIT-3B</p>
@@ -101,8 +127,10 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2 id="modalTitle">File Preview</h2>
+
             <button class="close-button" onclick="closeModal()">×</button>
         </div>
+
         <div id="previewContainer" class="preview-container"></div>
     </div>
 </div>

@@ -431,6 +431,30 @@ nav a:hover {
     background: #666666;
 }
 
+.restore-container {
+    background: #eeeeee;
+    text-align: center;
+    padding: 30px;
+}
+
+.restore-button {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    background: #555555;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.restore-button:hover {
+    background: #222222;
+    transform: translateY(-2px);
+}
+
 footer {
     background: #333333;
     color: #ffffff;

@@ -3,9 +3,24 @@ const DB_VERSION = 1;
 const STORE_NAME = "files";
 let db = null;
 
+const permanentFiles = {
+    quiz: {
+        name: "Quiz 1.png",
+        type: "image/png",
+        path: "Quiz 1.png",
+        storageKey: "quiz1_deleted"
+    },
+    laboratory: {
+        name: "Sarcaoga_lab1.pdf",
+        type: "application/pdf",
+        path: "Sarcaoga_lab1.pdf",
+        storageKey: "lab1_deleted"
+    }
+};
+
 const databaseRequest = indexedDB.open(DB_NAME, DB_VERSION);
 
-databaseRequest.onupgradeneeded = function(event) {
+databaseRequest.onupgradeneeded = function (event) {
     db = event.target.result;
 
     if (!db.objectStoreNames.contains(STORE_NAME)) {
@@ -20,12 +35,12 @@ databaseRequest.onupgradeneeded = function(event) {
     }
 };
 
-databaseRequest.onsuccess = function(event) {
+databaseRequest.onsuccess = function (event) {
     db = event.target.result;
     loadAllFiles();
 };
 
-databaseRequest.onerror = function() {
+databaseRequest.onerror = function () {
     alert("Unable to open file storage.");
 };
 
@@ -33,17 +48,17 @@ const quizInput = document.getElementById("quizInput");
 const laboratoryInput = document.getElementById("laboratoryInput");
 const examInput = document.getElementById("examInput");
 
-quizInput.addEventListener("change", function() {
+quizInput.addEventListener("change", function () {
     uploadFiles(quizInput.files, "quiz");
     quizInput.value = "";
 });
 
-laboratoryInput.addEventListener("change", function() {
+laboratoryInput.addEventListener("change", function () {
     uploadFiles(laboratoryInput.files, "laboratory");
     laboratoryInput.value = "";
 });
 
-examInput.addEventListener("change", function() {
+examInput.addEventListener("change", function () {
     uploadFiles(examInput.files, "exam");
     examInput.value = "";
 });
@@ -53,7 +68,7 @@ function uploadFiles(files, category) {
         return;
     }
 
-    Array.from(files).forEach(function(file) {
+    Array.from(files).forEach(function (file) {
         const fileData = {
             name: file.name,
             type: file.type || "application/octet-stream",
@@ -68,11 +83,11 @@ function uploadFiles(files, category) {
 
         store.add(fileData);
 
-        transaction.oncomplete = function() {
+        transaction.oncomplete = function () {
             loadCategoryFiles(category);
         };
 
-        transaction.onerror = function() {
+        transaction.onerror = function () {
             alert("Unable to save:\n" + file.name);
         };
     });
@@ -94,8 +109,42 @@ function loadCategoryFiles(category) {
     const index = store.index("category");
     const request = index.getAll(category);
 
-    request.onsuccess = function() {
-        displayFiles(request.result, category);
+    request.onsuccess = function () {
+        let files = request.result || [];
+
+        if (
+            category === "quiz" &&
+            !localStorage.getItem(permanentFiles.quiz.storageKey)
+        ) {
+            files.unshift({
+                id: "default-quiz-1",
+                name: permanentFiles.quiz.name,
+                type: permanentFiles.quiz.type,
+                size: 0,
+                category: "quiz",
+                date: "2026-01-01T00:00:00.000Z",
+                permanent: true,
+                path: permanentFiles.quiz.path
+            });
+        }
+
+        if (
+            category === "laboratory" &&
+            !localStorage.getItem(permanentFiles.laboratory.storageKey)
+        ) {
+            files.unshift({
+                id: "default-lab-1",
+                name: permanentFiles.laboratory.name,
+                type: permanentFiles.laboratory.type,
+                size: 0,
+                category: "laboratory",
+                date: "2026-01-01T00:00:00.000Z",
+                permanent: true,
+                path: permanentFiles.laboratory.path
+            });
+        }
+
+        displayFiles(files, category);
     };
 }
 
@@ -121,35 +170,85 @@ function displayFiles(files, category) {
         return;
     }
 
-    files.sort(function(a, b) {
+    files.sort(function (a, b) {
         return new Date(b.date) - new Date(a.date);
     });
 
-    files.forEach(function(file) {
+    files.forEach(function (file) {
         const card = document.createElement("div");
         card.className = "file-card";
 
         const icon = getFileIcon(file.type, file.name);
+        let actions;
+
+        if (file.permanent) {
+            actions = `
+                <button
+                    class="view-button"
+                    onclick="viewPermanentFile(
+                        '${escapeJS(file.path)}',
+                        '${escapeJS(file.name)}',
+                        '${escapeJS(file.type)}'
+                    )"
+                >
+                    VIEW
+                </button>
+
+                <button
+                    class="delete-button"
+                    onclick="deletePermanentFile(
+                        '${escapeJS(category)}',
+                        '${escapeJS(file.name)}'
+                    )"
+                >
+                    DELETE
+                </button>
+            `;
+        } else {
+            actions = `
+                <button
+                    class="view-button"
+                    onclick="viewFile(${file.id})"
+                >
+                    VIEW
+                </button>
+
+                <button
+                    class="delete-button"
+                    onclick="deleteFile(
+                        ${file.id},
+                        '${escapeJS(file.name)}',
+                        '${escapeJS(category)}'
+                    )"
+                >
+                    DELETE
+                </button>
+            `;
+        }
 
         card.innerHTML = `
             <div class="file-information">
-                <div class="file-icon">${icon}</div>
+                <div class="file-icon">
+                    ${icon}
+                </div>
+
                 <div class="file-details">
                     <div class="file-name">
                         ${escapeHTML(file.name)}
                     </div>
+
                     <div class="file-size">
-                        ${formatFileSize(file.size)}
+                        ${
+                            file.permanent
+                                ? "Portfolio file"
+                                : formatFileSize(file.size)
+                        }
                     </div>
                 </div>
             </div>
+
             <div class="file-actions">
-                <button class="view-button" onclick="viewFile(${file.id})">
-                    VIEW
-                </button>
-                <button class="delete-button" onclick="deleteFile(${file.id}, '${escapeJS(file.name)}', '${category}')">
-                    DELETE
-                </button>
+                ${actions}
             </div>
         `;
 
@@ -157,38 +256,70 @@ function displayFiles(files, category) {
     });
 }
 
-function getFileIcon(type, name) {
-    const extension = name.split(".").pop().toLowerCase();
+function deletePermanentFile(category, fileName) {
+    const confirmed = confirm(
+        "Are you sure you want to delete:\n\n" + fileName + "?"
+    );
 
-    if (type && type.startsWith("image/")) {
-        return "IMG";
+    if (!confirmed) {
+        return;
     }
 
-    if (type === "application/pdf") {
-        return "PDF";
+    if (category === "quiz") {
+        localStorage.setItem(
+            permanentFiles.quiz.storageKey,
+            "true"
+        );
     }
 
-    if (extension === "doc" || extension === "docx") {
-        return "DOC";
+    if (category === "laboratory") {
+        localStorage.setItem(
+            permanentFiles.laboratory.storageKey,
+            "true"
+        );
     }
 
-    if (extension === "xls" || extension === "xlsx") {
-        return "XLS";
+    loadCategoryFiles(category);
+}
+
+function viewPermanentFile(path, fileName, fileType) {
+    const modal = document.getElementById("viewModal");
+    const container = document.getElementById("previewContainer");
+    const title = document.getElementById("modalTitle");
+
+    title.textContent = fileName;
+    container.innerHTML = "";
+
+    if (fileType.startsWith("image/")) {
+        const image = document.createElement("img");
+        image.src = path;
+        image.alt = fileName;
+        container.appendChild(image);
+    } else if (fileType === "application/pdf") {
+        const iframe = document.createElement("iframe");
+        iframe.src = path;
+        iframe.title = fileName;
+        container.appendChild(iframe);
+    } else {
+        container.innerHTML = `
+            <div class="unsupported-preview">
+                <h3>Preview is not available</h3>
+                <p>
+                    This file type cannot be previewed directly.
+                </p>
+                <a
+                    href="${path}"
+                    target="_blank"
+                    class="open-file-button"
+                >
+                    OPEN FILE
+                </a>
+            </div>
+        `;
     }
 
-    if (extension === "ppt" || extension === "pptx") {
-        return "PPT";
-    }
-
-    if (extension === "zip" || extension === "rar" || extension === "7z") {
-        return "ZIP";
-    }
-
-    if (extension === "txt" || extension === "csv") {
-        return "TXT";
-    }
-
-    return "FILE";
+    modal.dataset.currentUrl = "";
+    modal.style.display = "block";
 }
 
 function viewFile(id) {
@@ -196,7 +327,7 @@ function viewFile(id) {
     const store = transaction.objectStore(STORE_NAME);
     const request = store.get(id);
 
-    request.onsuccess = function() {
+    request.onsuccess = function () {
         const file = request.result;
 
         if (!file) {
@@ -229,7 +360,7 @@ function viewFile(id) {
         } else if (file.type && file.type.startsWith("text/")) {
             const reader = new FileReader();
 
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 const pre = document.createElement("pre");
                 pre.className = "text-preview";
                 pre.textContent = event.target.result;
@@ -241,9 +372,18 @@ function viewFile(id) {
             container.innerHTML = `
                 <div class="unsupported-preview">
                     <h3>Preview is not available</h3>
-                    <p>This file type cannot be previewed directly in the browser.</p>
-                    <p>File: <strong>${escapeHTML(file.name)}</strong></p>
-                    <a href="${url}" target="_blank" class="open-file-button">
+                    <p>
+                        This file type cannot be previewed directly in the browser.
+                    </p>
+                    <p>
+                        File:
+                        <strong>${escapeHTML(file.name)}</strong>
+                    </p>
+                    <a
+                        href="${url}"
+                        target="_blank"
+                        class="open-file-button"
+                    >
                         OPEN FILE
                     </a>
                 </div>
@@ -268,7 +408,7 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function (event) {
     const modal = document.getElementById("viewModal");
 
     if (event.target === modal) {
@@ -276,7 +416,7 @@ window.addEventListener("click", function(event) {
     }
 });
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
         closeModal();
     }
@@ -296,13 +436,71 @@ function deleteFile(id, fileName, category) {
 
     store.delete(id);
 
-    transaction.oncomplete = function() {
+    transaction.oncomplete = function () {
         loadCategoryFiles(category);
     };
 
-    transaction.onerror = function() {
+    transaction.onerror = function () {
         alert("Unable to delete the file.");
     };
+}
+
+function restoreDefaultFiles() {
+    const confirmed = confirm(
+        "Restore Quiz 1.png and Sarcaoga_lab1.pdf?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    localStorage.removeItem(
+        permanentFiles.quiz.storageKey
+    );
+
+    localStorage.removeItem(
+        permanentFiles.laboratory.storageKey
+    );
+
+    loadAllFiles();
+}
+
+function getFileIcon(type, name) {
+    const extension = name.split(".").pop().toLowerCase();
+
+    if (type && type.startsWith("image/")) {
+        return "IMG";
+    }
+
+    if (type === "application/pdf") {
+        return "PDF";
+    }
+
+    if (extension === "doc" || extension === "docx") {
+        return "DOC";
+    }
+
+    if (extension === "xls" || extension === "xlsx") {
+        return "XLS";
+    }
+
+    if (extension === "ppt" || extension === "pptx") {
+        return "PPT";
+    }
+
+    if (
+        extension === "zip" ||
+        extension === "rar" ||
+        extension === "7z"
+    ) {
+        return "ZIP";
+    }
+
+    if (extension === "txt" || extension === "csv") {
+        return "TXT";
+    }
+
+    return "FILE";
 }
 
 function formatFileSize(bytes) {
@@ -310,11 +508,22 @@ function formatFileSize(bytes) {
         return "0 Bytes";
     }
 
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    const sizes = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB",
+        "TB"
+    ];
+
+    const i = Math.floor(
+        Math.log(bytes) / Math.log(1024)
+    );
 
     return parseFloat(
-        (bytes / Math.pow(1024, i)).toFixed(2)
+        (
+            bytes / Math.pow(1024, i)
+        ).toFixed(2)
     ) + " " + sizes[i];
 }
 
@@ -329,6 +538,6 @@ function escapeJS(text) {
         .replace(/\\/g, "\\\\")
         .replace(/'/g, "\\'")
         .replace(/"/g, '\\"')
-        .replace(/\n/g, "\\n")
-        .replace(/\r/g, "\\r");
+        .replace(/\n/g, "\\\n")
+        .replace(/\r/g, "\\\r");
 }

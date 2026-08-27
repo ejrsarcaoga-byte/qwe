@@ -3,15 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-   <iframe
-  src="Sarcaoga_lab1.pdf"
-  width="100%"
-  height="600"
-  style="border: none;"
-  title="Sarcaoga_lab1 PDF">
-</iframe>
+
+<header>
+    <div class="logo">MY PORTFOLIO</div>
+    <nav>
+        <a href="#home">HOME</a>
+        <a href="#quiz">QUIZ</a>
+        <a href="#laboratory">LABORATORY</a>
+        <a href="#exam">EXAM</a>
+    </nav>
+</header>
+
+<section id="home" class="home-section">
+    <div class="profile-container">
+        <div class="profile-image">
+            <img src="profile.jpg" alt="Ellaine Joyce Sarcaoga">
+        </div>
+
+        <div class="intro">
+            <h1>Hi! It's Ellaine Joyce Sarcaoga.</h1>
+            <h2>BSIT-3B</h2>
+            <p>
+                I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
+                I love playing online games and listening to music
+                during my free time. I enjoy exploring computers and
+                technology, and my goal is to improve my skills and
+                become successful in the future.
+            </p>
+
+            <div class="social-icons">
+                <a href="#" title="Facebook">
+                    <img src="fb logo.webp" alt="Facebook">
+                </a>
+                <a href="#" title="Instagram">
+                    <img src="insta.webp" alt="Instagram">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quiz" class="file-section">
+    <div class="section-header">
+        <h1>QUIZ</h1>
+        <p>Upload and manage your quiz files.</p>
+    </div>
+
+    <div class="upload-box">
+        <label for="quizInput" class="upload-button">+ UPLOAD QUIZ</label>
+        <input type="file" id="quizInput" class="file-input" multiple>
+        <p>PDF, pictures, screenshots, documents, and other file types are supported.</p>
+    </div>
+
+    <div class="file-list" id="quizList"></div>
+</section>
+
+<section id="laboratory" class="file-section">
+    <div class="section-header">
+        <h1>LABORATORY</h1>
+        <p>Upload and manage your laboratory files.</p>
+    </div>
+
+    <div class="upload-box">
+        <label for="laboratoryInput" class="upload-button">+ UPLOAD LABORATORY</label>
+        <input type="file" id="laboratoryInput" class="file-input" multiple>
+        <p>PDF, pictures, screenshots, documents, ZIP files, and other file types are supported.</p>
+    </div>
+
+    <div class="file-list" id="laboratoryList"></div>
+</section>
+
+<section id="exam" class="file-section">
+    <div class="section-header">
+        <h1>EXAM</h1>
+        <p>Upload and manage your examination files.</p>
+    </div>
+
+    <div class="upload-box">
+        <label for="examInput" class="upload-button">+ UPLOAD EXAM</label>
+        <input type="file" id="examInput" class="file-input" multiple>
+        <p>PDF, pictures, screenshots, documents, and other file types are supported.</p>
+    </div>
+
+    <div class="file-list" id="examList"></div>
+</section>
+
+<footer>
+    <p>© 2026 Ellaine Joyce Sarcaoga | BSIT-3B</p>
+</footer>
+
+<div id="viewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">File Preview</h2>
+            <button class="close-button" onclick="closeModal()">×</button>
+        </div>
+        <div id="previewContainer" class="preview-container"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

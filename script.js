@@ -124,7 +124,7 @@ function loadCategoryFiles(category) {
         ) {
             files.unshift({
                 id: "default-quiz-1",
-                name: permanentFiles.quiz.name,
+                name: permanentFiles.quiz.name, Quiz 1.png
                 type: permanentFiles.quiz.type,
                 size: 0,
                 category: "quiz",
@@ -140,7 +140,7 @@ function loadCategoryFiles(category) {
         ) {
             files.unshift({
                 id: "default-lab-1",
-                name: permanentFiles.laboratory.name,
+                name: permanentFiles.laboratory.name, Sarcaoga_lab1.pdf, Lab-Act2.pdf
                 type: permanentFiles.laboratory.type,
                 size: 0,
                 category: "laboratory",

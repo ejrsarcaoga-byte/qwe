@@ -15,7 +15,13 @@ const permanentFiles = {
         type: "application/pdf",
         path: "Sarcaoga_lab1.pdf",
         storageKey: "lab1_deleted"
-    }
+    },
+    laboratory: {
+        name: "Lab-Act2.pdf",
+        type: "application/pdf",
+        path: "Lab-Act2.pdf",
+        storageKey: "lab2_deleted"
+
 };
 
 const databaseRequest = indexedDB.open(DB_NAME, DB_VERSION);

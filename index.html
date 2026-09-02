@@ -74,13 +74,53 @@
 <section id="laboratory" class="file-section">
     <div class="section-header">
         <h1>LABORATORY</h1>
-        <pdf src="Lab-Act2.pdf", alt="laboratory">
-              <pdf src="Sarcaoga_lab1.pdf", alt="laboratory">
-        <p>Upload and manage your laboratory files.
-    Default files: <strong>Lab-Act2.pdf</strong> and
-    <strong>Sarcaoga_lab1.pdf</strong>.
+
+        <p>
+            Upload and manage your laboratory files.
+            Default files:
+            <strong>Lab-Act2.pdf</strong> and
+            <strong>Sarcaoga_lab1.pdf</strong>.
         </p>
-        
+    </div>
+
+    <div class="laboratory-pdf-list">
+
+        <article class="laboratory-pdf-card">
+            <h2>Lab-Act2.pdf</h2>
+
+            <iframe
+                src="Lab-Act2.pdf"
+                title="Lab-Act2.pdf"
+                class="laboratory-pdf">
+            </iframe>
+
+            <a
+                href="Lab-Act2.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="open-pdf-button">
+                OPEN LAB-ACT2.PDF
+            </a>
+        </article>
+
+        <article class="laboratory-pdf-card">
+            <h2>Sarcaoga_lab1.pdf</h2>
+
+            <iframe
+                src="Sarcaoga_lab1.pdf"
+                title="Sarcaoga_lab1.pdf"
+                class="laboratory-pdf">
+            </iframe>
+
+            <a
+                href="Sarcaoga_lab1.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="open-pdf-button">
+                OPEN SARCAOGA_LAB1.PDF
+            </a>
+        </article>
+
     </div>
 
     <div class="upload-box">
@@ -88,7 +128,12 @@
             + UPLOAD LABORATORY
         </label>
 
-        <input type="file" id="laboratoryInput" class="file-input" multiple>
+        <input
+            type="file"
+            id="laboratoryInput"
+            class="file-input"
+            multiple
+            accept=".pdf,image/*,.doc,.docx,.xls,.xlsx,.zip">
 
         <p>
             PDF, pictures, screenshots, documents,

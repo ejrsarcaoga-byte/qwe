@@ -53,6 +53,8 @@ function viewFile(id) {
             iframe.src = url;
             iframe.title = file.name;
 
+            laboratory"Lab-Act2.pdf"
+
             iframe.style.width = "100%";
             iframe.style.height = "75vh";
             iframe.style.border = "none";

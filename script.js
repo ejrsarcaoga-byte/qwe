@@ -52,4 +52,74 @@ async function addDefaultPdfFiles() {
     transaction.onerror = function () {
         alert("Unable to add the PDF files.");
     };
+    <section id="laboratory" class="file-section">
+    <div class="section-header">
+        <h1>LABORATORY</h1>
+
+        <p>
+            Upload and manage your laboratory files.
+        </p>
+    </div>
+
+    <div class="default-laboratory-files">
+        <h2>Laboratory Files</h2>
+
+        <div class="default-file-list">
+            <div class="default-file-card">
+                <div class="default-file-icon">PDF</div>
+
+                <div class="default-file-information">
+                    <h3>Lab-Act2.pdf</h3>
+                    <p>Laboratory activity file</p>
+                </div>
+
+                <button
+                    class="view-button"
+                    type="button"
+                    onclick="openDefaultPDF('Lab-Act2.pdf')"
+                >
+                    VIEW
+                </button>
+            </div>
+
+            <div class="default-file-card">
+                <div class="default-file-icon">PDF</div>
+
+                <div class="default-file-information">
+                    <h3>Sarcaoga_lab1.pdf</h3>
+                    <p>Laboratory activity file</p>
+                </div>
+
+                <button
+                    class="view-button"
+                    type="button"
+                    onclick="openDefaultPDF('Sarcaoga_lab1.pdf')"
+                >
+                    VIEW
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-box">
+        <label for="laboratoryInput" class="upload-button">
+            + UPLOAD LABORATORY
+        </label>
+
+        <input
+            type="file"
+            id="laboratoryInput"
+            class="file-input"
+            multiple
+            accept=".pdf,image/*,.doc,.docx,.xls,.xlsx,.zip"
+        >
+
+        <p>
+            PDF, pictures, screenshots, documents,
+            ZIP files, and other file types are supported.
+        </p>
+    </div>
+
+    <div class="file-list" id="laboratoryList"></div>
+</section>
 }

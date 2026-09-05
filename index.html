@@ -1,188 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+ <html lang="en"> 
+    <head> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
+        <link rel="stylesheet" href="style.css"> </head>
+    <body>
+             <header>
+                 <div class="logo"> MY PORTFOLIO </div>
+<nav>
+    <a href="#home">HOME</a>
+    <a href="#quiz">QUIZ</a>
+    <a href="#laboratory">LABORATORY</a>
+    <a href="#exam">EXAM</a>
+</nav>
 
-<body>
+</header> <section id="home" class="home-section"> <div class="profile-container"> <div class="profile-image"> <img src="Profile.jpg" alt="Ellaine Joyce Sarcaoga"> </div>
+    <div class="intro">
+        <span class="home-badge">
+            WELCOME TO MY PORTFOLIO
+        </span>
 
-<header>
-    <div class="logo">MY PORTFOLIO</div>
+        <h1>
+            Hi! It's Ellaine Joyce Sarcaoga.
+        </h1>
 
-    <nav>
-        <a href="#home">HOME</a>
-        <a href="#quiz">QUIZ</a>
-        <a href="#laboratory">LABORATORY</a>
-        <a href="#exam">EXAM</a>
-    </nav>
-</header>
+        <h2>
+            BSIT-3B
+        </h2>
 
-<section id="home" class="home-section">
-    <div class="profile-container">
-        <div class="profile-image">
-            <img src="Profile.jpg" alt="Ellaine Joyce Sarcaoga">
+        <p>
+            I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
+            I love playing online games and listening to music
+            during my free time. I enjoy exploring computers and
+            technology, and my goal is to improve my skills and
+            become successful in the future.
+        </p>
+
+        <div class="social-icons">
+            <a href="#" title="Facebook">
+                <img src="fb logo.webp" alt="Facebook">
+            </a>
+
+            <a href="#" title="Instagram">
+                <img src="insta.webp" alt="Instagram">
+            </a>
+        </div>
+    </div>
+</div>
+
+</section> <section id="quiz" class="file-section quiz-section"> <div class="section-header"> <span class="section-badge"> 📚 ACTIVITIES </span>
+    <h1>
+        QUIZ
+    </h1>
+
+    <p>
+        Quiz files and activities.
+    </p>
+</div>
+
+<div class="activity-grid">
+    <article class="activity-card">
+        <div class="card-top">
+            <div class="card-icon">
+                📝
+            </div>
+
+            <span>
+                QUIZ 1
+            </span>
         </div>
 
-        <div class="intro">
-            <h1>Hi! It's Ellaine Joyce Sarcaoga.</h1>
-            <h2>BSIT-3B</h2>
+        <div class="activity-content">
+            <h2>
+                Quiz 1
+            </h2>
 
             <p>
-                I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
-                I love playing online games and listening to music
-                during my free time. I enjoy exploring computers and
-                technology, and my goal is to improve my skills and
-                become successful in the future.
+                View my Quiz 1 activity.
             </p>
 
-            <div class="social-icons">
-                <a href="#" title="Facebook">
-                    <img src="fb logo.webp" alt="Facebook">
-                </a>
+            <button
+                type="button"
+                class="design-button"
+                onclick="openDefaultImage('Quiz 1.png', 'Quiz 1')">
+                VIEW QUIZ
+            </button>
+        </div>
+    </article>
+</div>
 
-                <a href="#" title="Instagram">
-                    <img src="insta.webp" alt="Instagram">
-                </a>
+</section> <section id="laboratory" class="file-section laboratory-section"> <div class="section-header"> <span class="section-badge"> 💻 PRACTICAL WORK </span>
+    <h1>
+        LABORATORY
+    </h1>
+
+    <p>
+        Laboratory activities and submitted files.
+    </p>
+</div>
+
+<div class="activity-grid laboratory-grid">
+    <article class="activity-card">
+        <div class="card-top">
+            <div class="card-icon">
+                📄
             </div>
+
+            <span>
+                LAB ACTIVITY 1
+            </span>
         </div>
-    </div>
-</section>
 
-<!-- QUIZ -->
-<section id="quiz" class="file-section">
-    <div class="section-header">
-        <h1>QUIZ</h1>
-        <p>Quiz files and activities.</p>
-    </div>
+        <div class="activity-content">
+            <h2>
+                Sarcaoga_lab1.pdf
+            </h2>
 
-    <div class="quiz-image-list">
-        <article class="quiz-card">
-            <h2>Quiz 1</h2>
-            
-            <img
-                src="Quiz 1.png"
-                alt="Quiz 1"
-                class="quiz-image">
-        </article>
-    </div>
-</section>
+            <p>
+                Laboratory Activity 1
+            </p>
 
+            <button
+                type="button"
+                class="design-button"
+                onclick="openDefaultPDF('Sarcaoga_lab1.pdf')">
+                VIEW PDF
+            </button>
+        </div>
+    </article>
 
-<section id="laboratory" class="file-section">
-    <div class="section-header">
-        <h1>LABORATORY</h1>
+    <article class="activity-card">
+        <div class="card-top">
+            <div class="card-icon">
+                📄
+            </div>
 
-        <p>
-            Default files:
-            <strong>Lab-Act2.pdf</strong> and
-            <strong>Sarcaoga_lab1.pdf</strong>.
-        </p>
-    </div>
+            <span>
+                LAB ACTIVITY 2
+            </span>
+        </div>
 
-    <div class="laboratory-pdf-list">
+        <div class="activity-content">
+            <h2>
+                Lab-Act2.pdf
+            </h2>
 
-        <article class="laboratory-pdf-card">
-            <h2>Lab-Act2.pdf</h2>
+            <p>
+                Laboratory Activity 2
+            </p>
 
-            <iframe
-                src="Lab-Act2.pdf"
-                title="Lab-Act2.pdf"
-                class="laboratory-pdf">
-            </iframe>
-
-            <a
-                href="Lab-Act2.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="open-pdf-button">
-                OPEN LAB-ACT2.PDF
-            </a>
-        </article>
-
-        <article class="laboratory-pdf-card">
-            <h2>Sarcaoga_lab1.pdf</h2>
-
-            <iframe
-                src="Sarcaoga_lab1.pdf"
-                title="Sarcaoga_lab1.pdf"
-                class="laboratory-pdf">
-            </iframe>
-
-            <a
-                href="Sarcaoga_lab1.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="open-pdf-button">
-                OPEN SARCAOGA_LAB1.PDF
-            </a>
-        </article>
-
-    </div>
-
-    <!-- Upload box and file list for Laboratory removed -->
-</section>
-
-<!-- EXAM -->
-<section id="exam" class="file-section">
-
-    <div class="section-header">
-
-        <h1>EXAM</h1>
-
-        <p>
-            Examination files and activities.
-        </p>
-
-    </div>
-
-
-    <div class="exam-file-list">
-
-        <!--
-            Exam files can be added here.
-
-            Example:
-
-            <article class="exam-card">
-                <h2>Exam 1</h2>
-                <a href="Exam1.png"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    OPEN EXAM 1
-                </a>
-            </article>
-        -->
-
-    </div>
-
-</section>
-
-<div class="restore-container">
-    <button class="restore-button" onclick="restoreDefaultFiles()">
-        RESTORE DEFAULT FILES
-    </button>
+            <button
+                type="button"
+                class="design-button"
+                onclick="openDefaultPDF('Lab-Act2.pdf')">
+                VIEW PDF
+            </button>
+        </div>
+    </article>
 </div>
 
-<footer>
-    <p>© 2026 Ellaine Joyce Sarcaoga | BSIT-3B</p>
-</footer>
+</section> <section id="exam" class="file-section exam-section"> <div class="section-header"> <span class="section-badge"> 🎓 ASSESSMENT </span>
+    <h1>
+        EXAM
+    </h1>
 
-<div id="viewModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modalTitle">File Preview</h2>
+    <p>
+        Examination files and activities.
+    </p>
+</div>
 
-            <button class="close-button" onclick="closeModal()">×</button>
+<div class="activity-grid">
+    <article class="activity-card">
+        <div class="card-top">
+            <div class="card-icon">
+                🎓
+            </div>
+
+            <span>
+                PRELIM EXAM
+            </span>
         </div>
 
-        <div id="previewContainer" class="preview-container"></div>
+        <div class="activity-content">
+            <h2>
+                Exam Prelim
+            </h2>
+
+            <p>
+                View my Prelim Examination activity.
+            </p>
+
+            <button
+                type="button"
+                class="design-button"
+                onclick="openDefaultImage('exam prelim.png', 'Exam Prelim')">
+                VIEW EXAM
+            </button>
+        </div>
+    </article>
+</div>
+
+</section> <footer> <p> © 2026 Ellaine Joyce Sarcaoga | BSIT-3B </p> </footer> <div id="viewModal" class="modal"> <div class="modal-content"> <div class="modal-header"> <h2 id="modalTitle"> File Preview </h2>
+        <button
+            type="button"
+            class="close-button"
+            onclick="closeModal()"
+            aria-label="Close">
+            ×
+        </button>
+    </div>
+
+    <div id="previewContainer" class="preview-container">
     </div>
 </div>
 
-<script src="script.js"></script>
-
-</body>
+</div> <script src="script.js"></script> 
+</body> 
 </html>

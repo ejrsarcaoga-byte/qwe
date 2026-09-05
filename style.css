@@ -16,7 +16,7 @@ body {
 
 header {
     width: 100%;
-    height: 85px;
+    min-height: 85px;
     background: #333333;
     display: flex;
     align-items: center;
@@ -46,6 +46,19 @@ nav a {
     text-decoration: none;
     font-size: 20px;
     font-weight: bold;
+    position: relative;
+    transition: 0.3s;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 0;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 10px;
     transition: 0.3s;
 }
 
@@ -53,12 +66,28 @@ nav a:hover {
     color: #bbbbbb;
 }
 
+nav a:hover::after {
+    width: 100%;
+}
+
 .home-section {
     min-height: calc(100vh - 85px);
-    background: #d9d9d9;
+    background: linear-gradient(135deg, #d4d4d4, #eeeeee, #cccccc);
     display: flex;
     align-items: center;
     padding: 70px 8%;
+    position: relative;
+}
+
+.home-section::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    top: 10%;
+    right: 5%;
 }
 
 .profile-container {
@@ -66,6 +95,8 @@ nav a:hover {
     display: flex;
     align-items: center;
     gap: 70px;
+    position: relative;
+    z-index: 1;
 }
 
 .profile-image {
@@ -76,7 +107,13 @@ nav a:hover {
     border: 8px solid #ffffff;
     flex-shrink: 0;
     background: #eeeeee;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+    transition: 0.4s;
+}
+
+.profile-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
 .profile-image img {
@@ -91,9 +128,22 @@ nav a:hover {
     color: #333333;
 }
 
+.home-badge {
+    display: inline-block;
+    padding: 9px 18px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    background: #333333;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
 .intro h1 {
     font-size: 48px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #222222;
     line-height: 1.2;
 }
@@ -139,14 +189,14 @@ nav a:hover {
 
 .social-icons a:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .file-section {
     min-height: 100vh;
     padding: 100px 8%;
-    background: #eeeeee;
     border-bottom: 1px solid #cccccc;
+    position: relative;
 }
 
 .section-header {
@@ -165,31 +215,184 @@ nav a:hover {
     color: #666666;
 }
 
+.section-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    margin-bottom: 15px;
+    border-radius: 30px;
+    background: #333333;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.quiz-section {
+    background: linear-gradient(135deg, #eeeeee 0%, #f8f8f8 50%, #dddddd 100%);
+}
+
+.laboratory-section {
+    background: linear-gradient(135deg, #e7e7e7, #f5f5f5, #dddddd);
+}
+
+.exam-section {
+    background: linear-gradient(135deg, #dedede 0%, #eeeeee 50%, #d5d5d5 100%);
+}
+
+.quiz-section::before,
+.laboratory-section::before,
+.exam-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #888888, transparent);
+}
+
+.activity-grid {
+    max-width: 1000px;
+    margin: 50px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.laboratory-grid {
+    max-width: 1000px;
+}
+
+.activity-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #dddddd;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transition: 0.35s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.card-top {
+    min-height: 95px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    background: linear-gradient(135deg, #333333, #666666);
+}
+
+.card-top span {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.card-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+}
+
+.activity-content {
+    padding: 30px;
+}
+
+.activity-content h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    color: #222222;
+}
+
+.activity-content p {
+    color: #777777;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.design-button {
+    border: none;
+    display: inline-block;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 10px;
+    background: #333333;
+    color: #ffffff;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.design-button:hover {
+    background: #111111;
+    transform: translateY(-2px);
+}
+
 .upload-box {
     max-width: 800px;
-    margin: 0 auto 45px;
-    padding: 45px 30px;
+    margin: 50px auto 45px;
+    padding: 40px 30px;
     background: #ffffff;
-    border: 2px dashed #777777;
-    border-radius: 15px;
+    border: 2px dashed #999999;
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    border-color: #333333;
+    transform: translateY(-3px);
+}
+
+.upload-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.upload-box h2 {
+    color: #222222;
+    margin-bottom: 10px;
+}
+
+.upload-box p {
+    color: #777777;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 25px;
 }
 
 .upload-button {
     display: inline-block;
-    padding: 15px 30px;
+    padding: 14px 25px;
     background: #333333;
     color: #ffffff;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 18px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .upload-button:hover {
-    background: #666666;
+    background: #111111;
     transform: translateY(-2px);
 }
 
@@ -197,11 +400,9 @@ nav a:hover {
     display: none;
 }
 
-.upload-box p {
-    margin-top: 20px;
-    color: #777777;
-    font-size: 15px;
-    line-height: 1.5;
+.exam-upload-button {
+    width: 100%;
+    text-align: center;
 }
 
 .file-list {
@@ -210,6 +411,10 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.exam-file-list {
+    margin-top: 35px;
 }
 
 .file-card {
@@ -297,16 +502,6 @@ nav a:hover {
     background: #222222;
 }
 
-.empty-message {
-    text-align: center;
-    padding: 35px;
-    color: #777777;
-    font-size: 18px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-}
-
 .modal {
     display: none;
     position: fixed;
@@ -317,13 +512,14 @@ nav a:hover {
     height: 100%;
     background: rgba(0, 0, 0, 0.80);
     padding: 30px;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
     width: 95%;
     height: 95%;
     max-width: 1200px;
-    margin: auto;
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
@@ -386,18 +582,6 @@ nav a:hover {
     background: #ffffff;
 }
 
-.text-preview {
-    width: 100%;
-    height: 100%;
-    padding: 30px;
-    background: #ffffff;
-    overflow: auto;
-    white-space: pre-wrap;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
 .unsupported-preview {
     text-align: center;
     background: #ffffff;
@@ -439,7 +623,7 @@ nav a:hover {
 
 .restore-button {
     border: none;
-    padding: 12px 22px;
+    padding: 13px 24px;
     border-radius: 7px;
     background: #555555;
     color: #ffffff;
@@ -533,6 +717,10 @@ footer p {
         justify-content: center;
     }
 
+    .activity-grid {
+        grid-template-columns: 1fr;
+    }
+
     .file-card {
         flex-direction: column;
         align-items: stretch;
@@ -554,6 +742,10 @@ footer p {
         height: 250px;
     }
 
+    .home-badge {
+        font-size: 10px;
+    }
+
     .intro h1 {
         font-size: 30px;
     }
@@ -562,8 +754,20 @@ footer p {
         font-size: 23px;
     }
 
+    .intro p {
+        font-size: 16px;
+    }
+
     .section-header h1 {
         font-size: 32px;
+    }
+
+    .section-header p {
+        font-size: 16px;
+    }
+
+    .file-section {
+        padding: 80px 5%;
     }
 
     .upload-box {
@@ -571,8 +775,22 @@ footer p {
     }
 
     .upload-button {
-        font-size: 15px;
+        font-size: 14px;
         padding: 13px 20px;
+    }
+
+    .card-top {
+        padding: 18px;
+    }
+
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 23px;
+    }
+
+    .activity-content {
+        padding: 22px;
     }
 
     .modal {
@@ -582,64 +800,5 @@ footer p {
     .modal-content {
         width: 100%;
         height: 95%;
-        .laboratory-pdf-list {
-    max-width: 1000px;
-    margin: 0 auto 45px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 25px;
-}
-
-.laboratory-pdf-card {
-    padding: 20px;
-    background: #ffffff;
-    border-left: 6px solid #444444;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
-}
-
-.laboratory-pdf-card h2 {
-    margin-bottom: 15px;
-    color: #222222;
-    font-size: 21px;
-    word-break: break-word;
-}
-
-.laboratory-pdf {
-    width: 100%;
-    height: 500px;
-    display: block;
-    border: none;
-    background: #eeeeee;
-}
-
-.open-pdf-button {
-    display: block;
-    margin-top: 15px;
-    padding: 12px 18px;
-    background: #333333;
-    color: #ffffff;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 7px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.open-pdf-button:hover {
-    background: #666666;
-    transform: translateY(-2px);
-}
-
-@media (max-width: 800px) {
-    .laboratory-pdf-list {
-        grid-template-columns: 1fr;
-    }
-
-    .laboratory-pdf {
-        height: 70vh;
     }
 }
-    

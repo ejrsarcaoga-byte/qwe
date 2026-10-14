@@ -1,369 +1,250 @@
 <!DOCTYPE html>
- <html lang="en"> 
-    <head> 
-        <meta charset="UTF-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
-        <link rel="stylesheet" href="style.css"> </head>
-    <body>
-             <header>
-                 <div class="logo"> MY PORTFOLIO </div>
-<nav>
-    <a href="#home">HOME</a>
-    <a href="#quiz">QUIZ</a>
-    <a href="#laboratory">LABORATORY</a>
-    <a href="#exam">EXAM</a>
-</nav>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-</header> <section id="home" class="home-section"> <div class="profile-container"> <div class="profile-image"> <img src="Profile.jpg" alt="Ellaine Joyce Sarcaoga"> </div>
-    <div class="intro">
-        <span class="home-badge">
-            WELCOME TO MY PORTFOLIO
-        </span>
+    <header>
+        <div class="logo">MY PORTFOLIO</div>
+        <nav>
+            <a href="#home">HOME</a>
+            <a href="#quiz">QUIZ</a>
+            <a href="#laboratory">LABORATORY</a>
+            <a href="#exam">EXAM</a>
+        </nav>
+    </header>
 
-        <h1>
-            Hi! It's Ellaine Joyce Sarcaoga.
-        </h1>
+    <!-- HOME -->
+    <section id="home" class="home-section">
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="Profile.jpg" alt="Ellaine Joyce Sarcaoga">
+            </div>
 
-        <h2>
-            BSIT-3B
-        </h2>
+            <div class="intro">
+                <span class="home-badge">WELCOME TO MY PORTFOLIO</span>
+                <h1>Hi! It's Ellaine Joyce Sarcaoga.</h1>
+                <h2>BSIT-3B</h2>
+                <p>
+                    I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
+                    I love playing online games and listening to music
+                    during my free time. I enjoy exploring computers and
+                    technology, and my goal is to improve my skills and
+                    become successful in the future.
+                </p>
 
-        <p>
-            I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
-            I love playing online games and listening to music
-            during my free time. I enjoy exploring computers and
-            technology, and my goal is to improve my skills and
-            become successful in the future.
-        </p>
+                <div class="social-icons">
+                    <a href="#" title="Facebook">
+                        <img src="fb logo.webp" alt="Facebook">
+                    </a>
+                    <a href="#" title="Instagram">
+                        <img src="insta.webp" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <div class="social-icons">
-            <a href="#" title="Facebook">
-                <img src="fb logo.webp" alt="Facebook">
-            </a>
+    <!-- QUIZ -->
+    <section id="quiz" class="file-section quiz-section">
+        <div class="section-header">
+            <span class="section-badge">📚 ACTIVITIES</span>
+            <h1>QUIZ</h1>
+            <p>Quiz files and activities.</p>
+        </div>
 
-            <a href="#" title="Instagram">
-                <img src="insta.webp" alt="Instagram">
-            </a>
+        <div class="activity-grid">
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>QUIZ 1</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Quiz 1</h2>
+                    <p>View my Quiz 1 activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('Quiz 1.png', 'Quiz 1')">VIEW QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>QUIZ 2</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Quiz 2</h2>
+                    <p>View my Quiz 2 activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('quiz2.jpg', 'Quiz 2')">VIEW QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>QUIZ 3</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Quiz 3</h2>
+                    <p>View my Quiz 3 activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('quiz3.jpg', 'Quiz 3')">VIEW QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>LONG QUIZ</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Long Quiz</h2>
+                    <p>View my Long Quiz activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('longquiz.jpg', 'Long Quiz')">VIEW LONG QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>MIDTERM</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Quiz 1 Midterm</h2>
+                    <p>View my Quiz 1 Midterm activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('quiz 1 midterm.png', 'Quiz 1 Midterm')">VIEW QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>MIDTERM</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Quiz 2 Midterm</h2>
+                    <p>View my Quiz 2 Midterm activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('quiz 2 midterm.png', 'Quiz 2 Midterm')">VIEW QUIZ</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📝</div>
+                    <span>MIDTERM</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Long Quiz Midterm</h2>
+                    <p>View my Long Quiz Midterm activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('long quiz midterm.png', 'Long Quiz Midterm')">VIEW LONG QUIZ</button>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- LABORATORY -->
+    <section id="laboratory" class="file-section laboratory-section">
+        <div class="section-header">
+            <span class="section-badge">💻 PRACTICAL WORK</span>
+            <h1>LABORATORY</h1>
+            <p>Laboratory activities and submitted files.</p>
+        </div>
+
+        <div class="activity-grid laboratory-grid">
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📄</div>
+                    <span>LAB ACTIVITY 1</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Sarcaoga_lab1.pdf</h2>
+                    <p>Laboratory Activity 1</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultPDF('Sarcaoga_lab1.pdf')">VIEW PDF</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📄</div>
+                    <span>LAB ACTIVITY 2</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Lab-Act2.pdf</h2>
+                    <p>Laboratory Activity 2</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultPDF('Lab-Act2.pdf')">VIEW PDF</button>
+                </div>
+            </article>
+
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">📄</div>
+                    <span>LAB ACTIVITY 3</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Lab 3</h2>
+                    <p>View my Lab activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('lab3.png', 'Lab 3')">VIEW LAB</button>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- EXAM -->
+    <section id="exam" class="file-section exam-section">
+        <div class="section-header">
+            <span class="section-badge">🎓 ASSESSMENT</span>
+            <h1>EXAM</h1>
+            <p>Examination files and activities.</p>
+        </div>
+
+        <div class="activity-grid">
+            <article class="activity-card">
+                <div class="card-top">
+                    <div class="card-icon">🎓</div>
+                    <span>PRELIM EXAM</span>
+                </div>
+                <div class="activity-content">
+                    <h2>Exam Prelim</h2>
+                    <p>View my Prelim Examination activity.</p>
+                    <button type="button" class="design-button"
+                        onclick="openDefaultImage('exam prelim.png', 'Exam Prelim')">VIEW EXAM</button>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ellaine Joyce Sarcaoga | BSIT-3B</p>
+    </footer>
+
+    <!-- PREVIEW MODAL -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">File Preview</h2>
+                <button type="button" class="close-button"
+                    onclick="closeModal()" aria-label="Close">×</button>
+            </div>
+            <div id="previewContainer" class="preview-container"></div>
         </div>
     </div>
-</div>
 
-</section> <section id="quiz" class="file-section quiz-section"> <div class="section-header"> <span class="section-badge"> 📚 ACTIVITIES </span>
-    <h1>
-        QUIZ
-    </h1>
-
-    <p>
-        Quiz files and activities.
-    </p>
-</div>
-
-<div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📝
-            </div>
-
-            <span>
-                QUIZ 1
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Quiz 1
-            </h2>
-
-            <p>
-                View my Quiz 1 activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('Quiz 1.png', 'Quiz 1')">
-                VIEW QUIZ
-            </button>
-         <span>
-          
-<div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📝
-            </div>
-
-            <span>
-                QUIZ 2
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Quiz 2
-            </h2>
-
-            <p>
-                View my Quiz 2 activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('quiz2.jpg', 'Quiz 2')">
-                VIEW QUIZ
-            </button>
-         <span>
-
-<div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📝
-            </div>
-
-            <span>
-                QUIZ 3
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Quiz 3
-            </h2>
-
-            <p>
-                View my Quiz 3 activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('quiz3.jpg', 'Quiz 3')">
-                VIEW QUIZ
-            </button>
-         <span>
-
-<div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📝
-            </div>
-
-            <span>
-                LONG QUIZ
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Long Quiz 
-            </h2>
-
-            <p>
-                View my Long Quiz activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('longquiz.jpg', 'Long Quiz')">
-                VIEW LONG QUIZ
-            </button>
-         <span>
-          
- <div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📝
-            </div>
-
-            <span>
-                LAB
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Lab 
-            </h2>
-
-            <p>
-                View my Lab activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('lab3.png', 'Lab')">
-                VIEW LAB
-            </button>
-         <span>
-        </div>
-    </article>
-</div>
-
-</section> <section id="laboratory" class="file-section laboratory-section"> <div class="section-header"> <span class="section-badge"> 💻 PRACTICAL WORK </span>
-    <h1>
-        LABORATORY
-    </h1>
-
-    <p>
-        Laboratory activities and submitted files.
-    </p>
-</div>
-
-<div class="activity-grid laboratory-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📄
-            </div>
-
-            <span>
-                LAB ACTIVITY 1
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Sarcaoga_lab1.pdf
-            </h2>
-
-            <p>
-                Laboratory Activity 1
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultPDF('Sarcaoga_lab1.pdf')">
-                VIEW PDF
-            </button>
-        </div>
-    </article>
-
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📄
-            </div>
-
-            <span>
-                LAB ACTIVITY 2
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Lab-Act2.pdf
-            </h2>
-
-            <p>
-                Laboratory Activity 2
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultPDF('Lab-Act2.pdf')">
-                VIEW PDF
-            </button>
-        </div>
-    </article>
-
-</div>
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                📄
-            </div>
-
-
-            <span>
-                Lab
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Lab 
-            </h2>
-
-            <p>
-                View my Lab activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('lab3.png', 'Lab')">
-                VIEW Lab
-            </button>
-         <span>
-        </div>
-    </article>
-</div>
-
-</section> <section id="exam" class="file-section exam-section"> <div class="section-header"> <span class="section-badge"> 🎓 ASSESSMENT </span>
-    <h1>
-        EXAM
-    </h1>
-
-    <p>
-        Examination files and activities.
-    </p>
-</div>
-
-<div class="activity-grid">
-    <article class="activity-card">
-        <div class="card-top">
-            <div class="card-icon">
-                🎓
-            </div>
-
-            <span>
-                PRELIM EXAM
-            </span>
-        </div>
-
-        <div class="activity-content">
-            <h2>
-                Exam Prelim
-            </h2>
-
-            <p>
-                View my Prelim Examination activity.
-            </p>
-
-            <button
-                type="button"
-                class="design-button"
-                onclick="openDefaultImage('exam prelim.png', 'Exam Prelim')">
-                VIEW EXAM
-            </button>
-        </div>
-    </article>
-</div>
-
-</section> <footer> <p> © 2026 Ellaine Joyce Sarcaoga | BSIT-3B </p> </footer> <div id="viewModal" class="modal"> <div class="modal-content"> <div class="modal-header"> <h2 id="modalTitle"> File Preview </h2>
-        <button
-            type="button"
-            class="close-button"
-            onclick="closeModal()"
-            aria-label="Close">
-            ×
-        </button>
-    </div>
-
-    <div id="previewContainer" class="preview-container">
-    </div>
-</div>
-
-</div> <script src="script.js"></script> 
-</body> 
+    <script src="script.js"></script>
+</body>
 </html>

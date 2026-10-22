@@ -41,12 +41,10 @@ function openDatabase() {
 
         request.onsuccess = function(event) {
             db = event.target.result;
-            console.log("Database connected.");
             resolve(db);
         };
 
         request.onerror = function(event) {
-            console.error("Database error:", event.target.error);
             reject(event.target.error);
         };
     });
@@ -58,77 +56,58 @@ function saveFile(fileObject) {
         const store = transaction.objectStore(STORE_NAME);
         const request = store.put(fileObject);
 
-        request.onsuccess = function() {
-            resolve();
-        };
-
-        request.onerror = function(event) {
-            reject(event.target.error);
-        };
+        request.onsuccess = () => resolve();
+        request.onerror = event => reject(event.target.error);
     });
 }
 
 function getFile(id) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], "readonly");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.get(id);
+        const request = db
+            .transaction([STORE_NAME], "readonly")
+            .objectStore(STORE_NAME)
+            .get(id);
 
-        request.onsuccess = function() {
-            resolve(request.result);
-        };
-
-        request.onerror = function(event) {
-            reject(event.target.error);
-        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = event => reject(event.target.error);
     });
 }
 
 function getAllFiles() {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], "readonly");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.getAll();
+        const request = db
+            .transaction([STORE_NAME], "readonly")
+            .objectStore(STORE_NAME)
+            .getAll();
 
-        request.onsuccess = function() {
-            resolve(request.result);
-        };
-
-        request.onerror = function(event) {
-            reject(event.target.error);
-        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = event => reject(event.target.error);
     });
 }
 
 function deleteFile(id) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], "readwrite");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.delete(id);
+        const request = db
+            .transaction([STORE_NAME], "readwrite")
+            .objectStore(STORE_NAME)
+            .delete(id);
 
-        request.onsuccess = function() {
-            resolve();
-        };
-
-        request.onerror = function(event) {
-            reject(event.target.error);
-        };
+        request.onsuccess = () => resolve();
+        request.onerror = event => reject(event.target.error);
     });
 }
 
-async function addDefaultPdfFiles(showAlert = false) {
+async function addDefaultPdfFiles() {
     for (const pdf of defaultPdfFiles) {
         try {
             const existing = await getFile(pdf.id);
 
-            if (existing) {
-                continue;
-            }
+            if (existing) continue;
 
             const response = await fetch(pdf.path);
 
             if (!response.ok) {
-                console.error("Cannot load:", pdf.path);
+                console.warn("Cannot load PDF:", pdf.path);
                 continue;
             }
 
@@ -144,35 +123,26 @@ async function addDefaultPdfFiles(showAlert = false) {
                 isDefault: true
             });
         } catch (error) {
-            console.error("Default file error:", error);
+            console.error("Default PDF error:", error);
         }
     }
 
     await loadAllFiles();
-
-    if (showAlert) {
-        alert("Default laboratory files restored!");
-    }
 }
 
 async function loadAllFiles() {
-    if (!db) {
-        return;
-    }
+    if (!db) return;
 
     try {
         const files = await getAllFiles();
 
-        const laboratoryFiles = files.filter(
-            file => file.category === "laboratory"
+        renderLaboratoryFiles(
+            files.filter(file => file.category === "laboratory")
         );
 
-        const examFiles = files.filter(
-            file => file.category === "exam"
+        renderExamFiles(
+            files.filter(file => file.category === "exam")
         );
-
-        renderLaboratoryFiles(laboratoryFiles);
-        renderExamFiles(examFiles);
     } catch (error) {
         console.error("Unable to load files:", error);
     }
@@ -180,19 +150,9 @@ async function loadAllFiles() {
 
 function renderLaboratoryFiles(files) {
     const list = document.getElementById("laboratoryList");
+    if (!list) return;
 
-    if (!list) {
-        return;
-    }
-
-    const uploadedFiles = files.filter(
-        file => !file.isDefault
-    );
-
-    if (uploadedFiles.length === 0) {
-        list.innerHTML = "";
-        return;
-    }
+    const uploadedFiles = files.filter(file => !file.isDefault);
 
     list.innerHTML = uploadedFiles
         .map(file => createFileCard(file))
@@ -201,15 +161,7 @@ function renderLaboratoryFiles(files) {
 
 function renderExamFiles(files) {
     const list = document.getElementById("examList");
-
-    if (!list) {
-        return;
-    }
-
-    if (files.length === 0) {
-        list.innerHTML = "";
-        return;
-    }
+    if (!list) return;
 
     list.innerHTML = files
         .map(file => createFileCard(file))
@@ -217,38 +169,27 @@ function renderExamFiles(files) {
 }
 
 function createFileCard(file) {
-    const size = formatFileSize(file.size);
-    const icon = getFileIcon(file.type, file.name);
-
     return `
         <div class="file-card">
             <div class="file-information">
                 <div class="file-icon">
-                    ${icon}
+                    ${getFileIcon(file.type, file.name)}
                 </div>
-
                 <div class="file-details">
                     <div class="file-name">
                         ${escapeHTML(file.name)}
                     </div>
-
                     <div class="file-size">
-                        ${size}
+                        ${formatFileSize(file.size)}
                     </div>
                 </div>
             </div>
-
             <div class="file-actions">
-                <button
-                    type="button"
-                    class="view-button"
+                <button type="button" class="view-button"
                     onclick="openStoredFile('${file.id}')">
                     VIEW
                 </button>
-
-                <button
-                    type="button"
-                    class="delete-button"
+                <button type="button" class="delete-button"
                     onclick="removeStoredFile('${file.id}')">
                     DELETE
                 </button>
@@ -259,35 +200,25 @@ function createFileCard(file) {
 
 async function handleFileUpload(event, category) {
     const files = Array.from(event.target.files);
-
-    if (files.length === 0) {
-        return;
-    }
+    if (!files.length) return;
 
     for (const file of files) {
         try {
-            const id =
-                category +
-                "-" +
-                Date.now() +
-                "-" +
-                Math.random().toString(36).substring(2, 9);
+            const id = category + "-" +
+                Date.now() + "-" +
+                Math.random().toString(36).slice(2, 9);
 
             await saveFile({
-                id: id,
+                id,
                 name: file.name,
                 type: file.type || "application/octet-stream",
                 data: file,
-                category: category,
+                category,
                 size: file.size,
                 isDefault: false
             });
         } catch (error) {
-            console.error(
-                "Unable to save:",
-                file.name,
-                error
-            );
+            console.error("Unable to save file:", error);
         }
     }
 
@@ -306,11 +237,7 @@ async function openStoredFile(id) {
 
         const url = URL.createObjectURL(file.data);
 
-        openPreview(
-            file.name,
-            file.type,
-            url
-        );
+        openPreview(file.name, file.type, url);
     } catch (error) {
         console.error(error);
         alert("Unable to open the file.");
@@ -320,18 +247,9 @@ async function openStoredFile(id) {
 async function removeStoredFile(id) {
     try {
         const file = await getFile(id);
+        if (!file) return;
 
-        if (!file) {
-            return;
-        }
-
-        const confirmed = confirm(
-            `Delete "${file.name}"?`
-        );
-
-        if (!confirmed) {
-            return;
-        }
+        if (!confirm(`Delete "${file.name}"?`)) return;
 
         await deleteFile(id);
         await loadAllFiles();
@@ -342,28 +260,33 @@ async function removeStoredFile(id) {
 }
 
 function openDefaultPDF(fileName) {
-    const pdf = defaultPdfFiles.find(
-        file => file.name === fileName
-    );
+    const pdf = defaultPdfFiles.find(file => file.name === fileName);
 
     if (!pdf) {
-        alert("PDF file not found.");
+        alert("PDF file not found: " + fileName);
         return;
     }
 
-    openPreview(
-        pdf.name,
-        "application/pdf",
-        pdf.path
-    );
+    openPreview(pdf.name, "application/pdf", pdf.path);
 }
 
+/* IMAGE PREVIEW WITH ERROR HANDLING */
 function openDefaultImage(imagePath, title) {
-    openPreview(
-        title,
-        "image",
-        imagePath
-    );
+    const img = new Image();
+
+    img.onload = function() {
+        openPreview(title, "image", imagePath);
+    };
+
+    img.onerror = function() {
+        alert(
+            "Cannot find image: " + imagePath +
+            "\n\nCheck that the image exists and the filename " +
+            "matches exactly, including spaces and extension."
+        );
+    };
+
+    img.src = imagePath;
 }
 
 function openPreview(title, type, source) {
@@ -371,22 +294,15 @@ function openPreview(title, type, source) {
     const modalTitle = document.getElementById("modalTitle");
     const container = document.getElementById("previewContainer");
 
-    if (!modal || !modalTitle || !container) {
-        return;
-    }
+    if (!modal || !modalTitle || !container) return;
 
     modalTitle.textContent = title;
     container.innerHTML = "";
 
-    if (
-        type === "application/pdf" ||
-        /\.pdf$/i.test(source)
-    ) {
+    if (type === "application/pdf" || /\.pdf$/i.test(source)) {
         const iframe = document.createElement("iframe");
-
         iframe.src = source;
         iframe.title = title;
-
         container.appendChild(iframe);
     } else if (
         type.startsWith("image/") ||
@@ -394,30 +310,26 @@ function openPreview(title, type, source) {
         isImageFile(title)
     ) {
         const img = document.createElement("img");
-
         img.src = source;
         img.alt = title;
 
+        img.onerror = function() {
+            container.textContent = "Unable to display this image.";
+        };
+
         container.appendChild(img);
     } else {
-        container.innerHTML = `
-            <div class="unsupported-preview">
-                <h3>Preview not available</h3>
+        const message = document.createElement("p");
+        message.textContent = "Preview is unavailable for this file type.";
 
-                <p>
-                    This file type cannot be
-                    previewed directly in the browser.
-                </p>
+        const link = document.createElement("a");
+        link.href = source;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "open-file-button";
+        link.textContent = "OPEN FILE";
 
-                <a
-                    href="${source}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="open-file-button">
-                    OPEN FILE
-                </a>
-            </div>
-        `;
+        container.append(message, link);
     }
 
     modal.style.display = "flex";
@@ -428,13 +340,8 @@ function closeModal() {
     const modal = document.getElementById("viewModal");
     const container = document.getElementById("previewContainer");
 
-    if (modal) {
-        modal.style.display = "none";
-    }
-
-    if (container) {
-        container.innerHTML = "";
-    }
+    if (modal) modal.style.display = "none";
+    if (container) container.innerHTML = "";
 
     document.body.style.overflow = "";
 }
@@ -448,85 +355,44 @@ window.addEventListener("click", function(event) {
 });
 
 document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        closeModal();
-    }
+    if (event.key === "Escape") closeModal();
 });
 
 async function restoreDefaultFiles() {
-    const confirmed = confirm(
-        "Restore the default laboratory PDF files?"
-    );
+    if (!confirm("Restore the default laboratory PDF files?")) return;
 
-    if (!confirmed) {
-        return;
-    }
-
-    await addDefaultPdfFiles(true);
+    await addDefaultPdfFiles();
+    alert("Default laboratory files restored!");
 }
 
 function formatFileSize(bytes) {
-    if (!bytes || bytes <= 0) {
-        return "0 KB";
-    }
+    if (!bytes || bytes <= 0) return "0 KB";
 
-    const units = [
-        "Bytes",
-        "KB",
-        "MB",
-        "GB"
-    ];
-
-    const index = Math.floor(
-        Math.log(bytes) / Math.log(1024)
+    const units = ["Bytes", "KB", "MB", "GB"];
+    const index = Math.min(
+        Math.floor(Math.log(bytes) / Math.log(1024)),
+        units.length - 1
     );
 
-    const size = bytes / Math.pow(1024, index);
-
     return (
-        Math.round(size * 100) / 100
+        Math.round((bytes / Math.pow(1024, index)) * 100) / 100
     ) + " " + units[index];
 }
 
 function getFileIcon(type, name) {
-    const extension = name
-        .split(".")
-        .pop()
-        .toUpperCase();
+    const extension = name.split(".").pop().toUpperCase();
 
-    if (extension === "PDF") {
-        return "PDF";
-    }
-
-    if (type && type.startsWith("image/")) {
-        return "IMG";
-    }
-
-    if (
-        extension === "DOC" ||
-        extension === "DOCX"
-    ) {
-        return "DOC";
-    }
-
-    if (
-        extension === "XLS" ||
-        extension === "XLSX"
-    ) {
-        return "XLS";
-    }
-
-    if (extension === "ZIP") {
-        return "ZIP";
-    }
+    if (extension === "PDF") return "PDF";
+    if (type && type.startsWith("image/")) return "IMG";
+    if (["DOC", "DOCX"].includes(extension)) return "DOC";
+    if (["XLS", "XLSX"].includes(extension)) return "XLS";
+    if (extension === "ZIP") return "ZIP";
 
     return "FILE";
 }
 
 function isImageFile(fileName) {
-    return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(
-        fileName
-    );
+    return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(fileName);
 }
 
 function escapeHTML(value) {
@@ -541,39 +407,24 @@ function escapeHTML(value) {
 document.addEventListener("DOMContentLoaded", async function() {
     try {
         await openDatabase();
-        await addDefaultPdfFiles(false);
+        await addDefaultPdfFiles();
 
-        const laboratoryInput = document.getElementById(
-            "laboratoryInput"
-        );
-
+        const laboratoryInput = document.getElementById("laboratoryInput");
         if (laboratoryInput) {
-            laboratoryInput.addEventListener(
-                "change",
-                function(event) {
-                    handleFileUpload(event, "laboratory");
-                }
-            );
+            laboratoryInput.addEventListener("change", event => {
+                handleFileUpload(event, "laboratory");
+            });
         }
 
-        const examInput = document.getElementById(
-            "examInput"
-        );
-
+        const examInput = document.getElementById("examInput");
         if (examInput) {
-            examInput.addEventListener(
-                "change",
-                function(event) {
-                    handleFileUpload(event, "exam");
-                }
-            );
+            examInput.addEventListener("change", event => {
+                handleFileUpload(event, "exam");
+            });
         }
 
         await loadAllFiles();
     } catch (error) {
-        console.error(
-            "Website initialization failed:",
-            error
-        );
+        console.error("Website initialization failed:", error);
     }
 });

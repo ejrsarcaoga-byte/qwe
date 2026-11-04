@@ -1,430 +1,189 @@
-const DB_NAME = "EllainePortfolioDB";
-const DB_VERSION = 1;
-const STORE_NAME = "portfolioFiles";
+(function () {
+    const root = document.documentElement;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = matchMedia("(hover: hover)").matches;
 
-let db;
-
-const defaultPdfFiles = [
-    {
-        id: "lab-act2-pdf",
-        name: "Lab-Act2.pdf",
-        path: "Lab-Act2.pdf",
-        type: "application/pdf",
-        category: "laboratory"
-    },
-    {
-        id: "sarcaoga-lab1-pdf",
-        name: "Sarcaoga_lab1.pdf",
-        path: "Sarcaoga_lab1.pdf",
-        type: "application/pdf",
-        category: "laboratory"
+    function toast(msg) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2600);
     }
-];
 
-function openDatabase() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
+    /* 1. Accent color switcher */
+    function setAccent(a, b) {
+        root.style.setProperty("--accent", a);
+        root.style.setProperty("--accent-2", b);
+    }
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem("accent")); } catch (e) {}
+    if (saved) setAccent(saved[0], saved[1]);
+    document.querySelectorAll("#swatches button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            saved = [btn.dataset.a, btn.dataset.b];
+            setAccent(saved[0], saved[1]);
+            try { localStorage.setItem("accent", JSON.stringify(saved)); } catch (e) {}
+        });
+    });
 
-        request.onupgradeneeded = function(event) {
-            const database = event.target.result;
+    /* 2. Network particles sa hero */
+    const cv = document.getElementById("bgCanvas");
+    if (cv && !reduce) {
+        const c = cv.getContext("2d");
+        const hero = cv.parentElement;
+        let w, h, pts = [], mouse = null;
+        const size = () => {
+            w = cv.width = cv.offsetWidth;
+            h = cv.height = cv.offsetHeight;
+            const n = Math.round(Math.min(70, (w * h) / 20000));
+            pts = Array.from({ length: n }, () => ({
+                x: Math.random() * w, y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5
+            }));
+        };
+        size();
+        addEventListener("resize", size);
+        hero.addEventListener("mousemove", e => {
+            const r = cv.getBoundingClientRect();
+            mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+        });
+        hero.addEventListener("mouseleave", () => (mouse = null));
 
-            if (!database.objectStoreNames.contains(STORE_NAME)) {
-                const store = database.createObjectStore(STORE_NAME, {
-                    keyPath: "id"
+        (function frame() {
+            if (scrollY < innerHeight) {
+                c.clearRect(0, 0, w, h);
+                const col = getComputedStyle(root).getPropertyValue("--accent").trim();
+                c.fillStyle = col;
+                c.strokeStyle = col;
+                pts.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                    c.globalAlpha = 0.7;
+                    c.beginPath(); c.arc(p.x, p.y, 2, 0, 6.283); c.fill();
                 });
-
-                store.createIndex("category", "category", {
-                    unique: false
-                });
+                const line = (a, b, max, k) => {
+                    const d = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (d > max) return;
+                    c.globalAlpha = (1 - d / max) * k;
+                    c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+                };
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) line(pts[i], pts[j], 130, 0.35);
+                    if (mouse) line(pts[i], mouse, 170, 0.7);
+                }
             }
-        };
+            requestAnimationFrame(frame);
+        })();
+    }
 
-        request.onsuccess = function(event) {
-            db = event.target.result;
-            resolve(db);
-        };
+    /* 3. Quick find (Ctrl+K) */
+    const pal = document.getElementById("palette");
+    const inp = document.getElementById("paletteInput");
+    const list = document.getElementById("paletteList");
+    let items = [], shown = [], active = 0;
 
-        request.onerror = function(event) {
-            reject(event.target.error);
-        };
-    });
-}
-
-function saveFile(fileObject) {
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], "readwrite");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(fileObject);
-
-        request.onsuccess = () => resolve();
-        request.onerror = event => reject(event.target.error);
-    });
-}
-
-function getFile(id) {
-    return new Promise((resolve, reject) => {
-        const request = db
-            .transaction([STORE_NAME], "readonly")
-            .objectStore(STORE_NAME)
-            .get(id);
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = event => reject(event.target.error);
-    });
-}
-
-function getAllFiles() {
-    return new Promise((resolve, reject) => {
-        const request = db
-            .transaction([STORE_NAME], "readonly")
-            .objectStore(STORE_NAME)
-            .getAll();
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = event => reject(event.target.error);
-    });
-}
-
-function deleteFile(id) {
-    return new Promise((resolve, reject) => {
-        const request = db
-            .transaction([STORE_NAME], "readwrite")
-            .objectStore(STORE_NAME)
-            .delete(id);
-
-        request.onsuccess = () => resolve();
-        request.onerror = event => reject(event.target.error);
-    });
-}
-
-async function addDefaultPdfFiles() {
-    for (const pdf of defaultPdfFiles) {
-        try {
-            const existing = await getFile(pdf.id);
-
-            if (existing) continue;
-
-            const response = await fetch(pdf.path);
-
-            if (!response.ok) {
-                console.warn("Cannot load PDF:", pdf.path);
-                continue;
-            }
-
-            const blob = await response.blob();
-
-            await saveFile({
-                id: pdf.id,
-                name: pdf.name,
-                type: "application/pdf",
-                data: blob,
-                category: "laboratory",
-                size: blob.size,
-                isDefault: true
+    function build() {
+        items = [...document.querySelectorAll("nav a[href^='#']")].map(a => ({
+            label: a.textContent, group: "Section",
+            run: () => { location.hash = a.getAttribute("href"); }
+        }));
+        document.querySelectorAll(".activity-card").forEach(card => {
+            items.push({
+                label: card.querySelector("h2").textContent,
+                group: card.closest("section").querySelector("h1").textContent,
+                run: () => card.querySelector(".design-button").click()
             });
-        } catch (error) {
-            console.error("Default PDF error:", error);
+        });
+    }
+    function render() {
+        const q = inp.value.trim().toLowerCase();
+        shown = items.filter(i => (i.label + " " + i.group).toLowerCase().includes(q));
+        active = Math.min(active, Math.max(shown.length - 1, 0));
+        list.innerHTML = shown.length
+            ? shown.map((i, n) => `<li class="${n === active ? "on" : ""}" data-n="${n}"><span>${escapeHTML(i.label)}</span><em>${escapeHTML(i.group)}</em></li>`).join("")
+            : `<li class="none">No results</li>`;
+        const on = list.querySelector(".on");
+        if (on) on.scrollIntoView({ block: "nearest" });
+    }
+    function openPalette() { build(); inp.value = ""; active = 0; render(); pal.style.display = "flex"; inp.focus(); }
+    function closePalette() { pal.style.display = "none"; }
+    function runItem(n) { const it = shown[n]; if (!it) return; closePalette(); it.run(); }
+
+    inp.addEventListener("input", () => { active = 0; render(); });
+    inp.addEventListener("keydown", e => {
+        if (e.key === "ArrowDown") { e.preventDefault(); active = Math.min(active + 1, shown.length - 1); render(); }
+        if (e.key === "ArrowUp") { e.preventDefault(); active = Math.max(active - 1, 0); render(); }
+        if (e.key === "Enter") runItem(active);
+        if (e.key === "Escape") closePalette();
+    });
+    list.addEventListener("click", e => {
+        const li = e.target.closest("li[data-n]");
+        if (li) runItem(Number(li.dataset.n));
+    });
+    pal.addEventListener("click", e => { if (e.target === pal) closePalette(); });
+    document.getElementById("paletteBtn").addEventListener("click", openPalette);
+    document.addEventListener("keydown", e => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+            e.preventDefault();
+            pal.style.display === "flex" ? closePalette() : openPalette();
         }
-    }
+    });
 
-    await loadAllFiles();
-}
+    /* 4. Stats na kusang nagbibilang ng cards */
+    document.querySelectorAll("[data-count]").forEach(el => {
+        const total = document.querySelectorAll(el.dataset.count + " .activity-card").length;
+        const io = new IntersectionObserver(entries => {
+            if (!entries[0].isIntersecting) return;
+            io.disconnect();
+            if (reduce) { el.textContent = total; return; }
+            const start = performance.now();
+            (function tick(now) {
+                const k = Math.min((now - start) / 900, 1);
+                el.textContent = Math.round(total * k);
+                if (k < 1) requestAnimationFrame(tick);
+            })(start);
+        });
+        io.observe(el);
+    });
 
-async function loadAllFiles() {
-    if (!db) return;
-
-    try {
-        const files = await getAllFiles();
-
-        renderLaboratoryFiles(
-            files.filter(file => file.category === "laboratory")
-        );
-
-        renderExamFiles(
-            files.filter(file => file.category === "exam")
-        );
-    } catch (error) {
-        console.error("Unable to load files:", error);
-    }
-}
-
-function renderLaboratoryFiles(files) {
-    const list = document.getElementById("laboratoryList");
-    if (!list) return;
-
-    const uploadedFiles = files.filter(file => !file.isDefault);
-
-    list.innerHTML = uploadedFiles
-        .map(file => createFileCard(file))
-        .join("");
-}
-
-function renderExamFiles(files) {
-    const list = document.getElementById("examList");
-    if (!list) return;
-
-    list.innerHTML = files
-        .map(file => createFileCard(file))
-        .join("");
-}
-
-function createFileCard(file) {
-    return `
-        <div class="file-card">
-            <div class="file-information">
-                <div class="file-icon">
-                    ${getFileIcon(file.type, file.name)}
-                </div>
-                <div class="file-details">
-                    <div class="file-name">
-                        ${escapeHTML(file.name)}
-                    </div>
-                    <div class="file-size">
-                        ${formatFileSize(file.size)}
-                    </div>
-                </div>
-            </div>
-            <div class="file-actions">
-                <button type="button" class="view-button"
-                    onclick="openStoredFile('${file.id}')">
-                    VIEW
-                </button>
-                <button type="button" class="delete-button"
-                    onclick="removeStoredFile('${file.id}')">
-                    DELETE
-                </button>
-            </div>
-        </div>
-    `;
-}
-
-async function handleFileUpload(event, category) {
-    const files = Array.from(event.target.files);
-    if (!files.length) return;
-
-    for (const file of files) {
-        try {
-            const id = category + "-" +
-                Date.now() + "-" +
-                Math.random().toString(36).slice(2, 9);
-
-            await saveFile({
-                id,
-                name: file.name,
-                type: file.type || "application/octet-stream",
-                data: file,
-                category,
-                size: file.size,
-                isDefault: false
+    /* 5. Spotlight at 3D tilt sa cards */
+    if (canHover) {
+        document.querySelectorAll(".activity-card").forEach(card => {
+            card.addEventListener("mouseenter", () => { card.style.transition = "transform .1s, border-color .3s"; });
+            card.addEventListener("mousemove", e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width;
+                const y = (e.clientY - r.top) / r.height;
+                card.style.setProperty("--mx", x * 100 + "%");
+                card.style.setProperty("--my", y * 100 + "%");
+                if (!reduce) card.style.transform =
+                    `perspective(800px) rotateX(${(0.5 - y) * 8}deg) rotateY(${(x - 0.5) * 8}deg) translateY(-6px)`;
             });
-        } catch (error) {
-            console.error("Unable to save file:", error);
-        }
+            card.addEventListener("mouseleave", () => { card.style.transform = ""; card.style.transition = ""; });
+        });
     }
 
-    await loadAllFiles();
-    event.target.value = "";
-}
-
-async function openStoredFile(id) {
-    try {
-        const file = await getFile(id);
-
-        if (!file) {
-            alert("File not found.");
-            return;
-        }
-
-        const url = URL.createObjectURL(file.data);
-
-        openPreview(file.name, file.type, url);
-    } catch (error) {
-        console.error(error);
-        alert("Unable to open the file.");
-    }
-}
-
-async function removeStoredFile(id) {
-    try {
-        const file = await getFile(id);
-        if (!file) return;
-
-        if (!confirm(`Delete "${file.name}"?`)) return;
-
-        await deleteFile(id);
-        await loadAllFiles();
-    } catch (error) {
-        console.error(error);
-        alert("Unable to delete file.");
-    }
-}
-
-function openDefaultPDF(fileName) {
-    const pdf = defaultPdfFiles.find(file => file.name === fileName);
-
-    if (!pdf) {
-        alert("PDF file not found: " + fileName);
-        return;
-    }
-
-    openPreview(pdf.name, "application/pdf", pdf.path);
-}
-
-/* IMAGE PREVIEW WITH ERROR HANDLING */
-function openDefaultImage(imagePath, title) {
-    const img = new Image();
-
-    img.onload = function() {
-        openPreview(title, "image", imagePath);
-    };
-
-    img.onerror = function() {
-        alert(
-            "Cannot find image: " + imagePath +
-            "\n\nCheck that the image exists and the filename " +
-            "matches exactly, including spaces and extension."
-        );
-    };
-
-    img.src = imagePath;
-}
-
-function openPreview(title, type, source) {
-    const modal = document.getElementById("viewModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const container = document.getElementById("previewContainer");
-
-    if (!modal || !modalTitle || !container) return;
-
-    modalTitle.textContent = title;
-    container.innerHTML = "";
-
-    if (type === "application/pdf" || /\.pdf$/i.test(source)) {
-        const iframe = document.createElement("iframe");
-        iframe.src = source;
-        iframe.title = title;
-        container.appendChild(iframe);
-    } else if (
-        type.startsWith("image/") ||
-        type === "image" ||
-        isImageFile(title)
-    ) {
-        const img = document.createElement("img");
-        img.src = source;
-        img.alt = title;
-
-        img.onerror = function() {
-            container.textContent = "Unable to display this image.";
-        };
-
-        container.appendChild(img);
-    } else {
-        const message = document.createElement("p");
-        message.textContent = "Preview is unavailable for this file type.";
-
-        const link = document.createElement("a");
-        link.href = source;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.className = "open-file-button";
-        link.textContent = "OPEN FILE";
-
-        container.append(message, link);
-    }
-
-    modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
-}
-
-function closeModal() {
-    const modal = document.getElementById("viewModal");
-    const container = document.getElementById("previewContainer");
-
-    if (modal) modal.style.display = "none";
-    if (container) container.innerHTML = "";
-
-    document.body.style.overflow = "";
-}
-
-window.addEventListener("click", function(event) {
-    const modal = document.getElementById("viewModal");
-
-    if (event.target === modal) {
-        closeModal();
-    }
-});
-
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") closeModal();
-});
-
-async function restoreDefaultFiles() {
-    if (!confirm("Restore the default laboratory PDF files?")) return;
-
-    await addDefaultPdfFiles();
-    alert("Default laboratory files restored!");
-}
-
-function formatFileSize(bytes) {
-    if (!bytes || bytes <= 0) return "0 KB";
-
-    const units = ["Bytes", "KB", "MB", "GB"];
-    const index = Math.min(
-        Math.floor(Math.log(bytes) / Math.log(1024)),
-        units.length - 1
-    );
-
-    return (
-        Math.round((bytes / Math.pow(1024, index)) * 100) / 100
-    ) + " " + units[index];
-}
-
-function getFileIcon(type, name) {
-    const extension = name.split(".").pop().toUpperCase();
-
-    if (extension === "PDF") return "PDF";
-    if (type && type.startsWith("image/")) return "IMG";
-    if (["DOC", "DOCX"].includes(extension)) return "DOC";
-    if (["XLS", "XLSX"].includes(extension)) return "XLS";
-    if (extension === "ZIP") return "ZIP";
-
-    return "FILE";
-}
-
-function isImageFile(fileName) {
-    return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(fileName);
-}
-
-function escapeHTML(value) {
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-document.addEventListener("DOMContentLoaded", async function() {
-    try {
-        await openDatabase();
-        await addDefaultPdfFiles();
-
-        const laboratoryInput = document.getElementById("laboratoryInput");
-        if (laboratoryInput) {
-            laboratoryInput.addEventListener("change", event => {
-                handleFileUpload(event, "laboratory");
-            });
-        }
-
-        const examInput = document.getElementById("examInput");
-        if (examInput) {
-            examInput.addEventListener("change", event => {
-                handleFileUpload(event, "exam");
-            });
-        }
-
-        await loadAllFiles();
-    } catch (error) {
-        console.error("Website initialization failed:", error);
-    }
-});
+    /* 6. Hidden: Konami code */
+    const seq = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
+    let pos = 0;
+    document.addEventListener("keydown", e => {
+        if (e.target.tagName === "INPUT") return;
+        const k = e.key.toLowerCase();
+        pos = k === seq[pos] ? pos + 1 : (k === seq[0] ? 1 : 0);
+        if (pos < seq.length) return;
+        pos = 0;
+        toast("Rainbow mode unlocked");
+        let hue = 0;
+        const t = setInterval(() => {
+            hue = (hue + 6) % 360;
+            setAccent(`hsl(${hue} 85% 58%)`, `hsl(${(hue + 60) % 360} 85% 58%)`);
+        }, 50);
+        setTimeout(() => {
+            clearInterval(t);
+            if (saved) setAccent(saved[0], saved[1]);
+            else { root.style.removeProperty("--accent"); root.style.removeProperty("--accent-2"); }
+        }, 6000);
+    });
+})();

@@ -4,269 +4,359 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ellaine Joyce Sarcaoga | My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;700;800&display=swap");
+
+:root {
+    --bg: #f3f5fb;
+    --panel: #ffffff;
+    --ink: #151a2d;
+    --muted: #5d657d;
+    --line: #dde1ee;
+    --accent: #6d4aff;
+    --accent-2: #14b8d4;
+    --bar: rgba(255, 255, 255, 0.82);
+    --shadow: 0 10px 30px rgba(30, 40, 90, 0.10);
+}
+[data-theme="dark"] {
+    --bg: #0e1120;
+    --panel: #171b2f;
+    --ink: #eef0fa;
+    --muted: #9aa3c0;
+    --line: #272d48;
+    --accent: #8f78ff;
+    --accent-2: #3ddcf5;
+    --bar: rgba(14, 17, 32, 0.82);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { font-family: "DM Sans", system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; transition: background .3s, color .3s; }
+h1, h2, .logo { font-family: "Sora", "DM Sans", sans-serif; }
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+#progress { position: fixed; top: 0; left: 0; height: 4px; width: 0; z-index: 3000; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+header { position: sticky; top: 0; z-index: 1000; min-height: 70px; padding: 0 6%; display: flex; align-items: center; justify-content: space-between; background: var(--bar); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.logo { font-size: 20px; font-weight: 800; }
+.logo b { color: var(--accent); }
+nav { display: flex; align-items: center; gap: 6px; }
+nav a { color: var(--muted); text-decoration: none; font-weight: 500; padding: 8px 16px; border-radius: 999px; transition: .25s; }
+nav a:hover { color: var(--ink); }
+nav a.active { background: var(--accent); color: #fff; }
+#themeToggle { margin-left: 10px; height: 38px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; font-weight: 500; font-size: 14px; cursor: pointer; transition: .25s; }
+#themeToggle:hover { border-color: var(--accent); }
+
+.home-section { min-height: calc(100vh - 70px); display: flex; align-items: center; padding: 60px 8%; position: relative; overflow: hidden; }
+.home-section::before { content: ""; position: absolute; width: 520px; height: 520px; right: -120px; top: -100px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0%, transparent 68%); opacity: .22; }
+.home-section::after { content: ""; position: absolute; width: 420px; height: 420px; left: -140px; bottom: -160px; border-radius: 50%; background: radial-gradient(circle, var(--accent-2) 0%, transparent 68%); opacity: .18; }
+.profile-container { position: relative; z-index: 1; width: 100%; display: flex; align-items: center; gap: 70px; }
+.profile-image { width: 400px; height: 400px; flex-shrink: 0; border-radius: 50%; padding: 8px; background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent)); box-shadow: var(--shadow); animation: spin-in 1s cubic-bezier(.2, .8, .2, 1) both; }
+.profile-image img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid var(--bg); display: block; }
+@keyframes spin-in { from { opacity: 0; transform: rotate(-25deg) scale(.85); } to { opacity: 1; transform: none; } }
+
+.intro { max-width: 680px; }
+.home-badge { display: inline-block; padding: 6px 16px; margin-bottom: 18px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 14px; }
+.intro h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.15; margin-bottom: 12px; }
+.intro h2 { font-size: clamp(20px, 2.6vw, 28px); color: var(--accent-2); margin-bottom: 20px; min-height: 1.4em; }
+.cursor { display: inline-block; width: 3px; height: 1em; margin-left: 3px; vertical-align: -0.12em; background: var(--accent-2); animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.intro p { font-size: 18px; color: var(--muted); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn { display: inline-block; padding: 13px 26px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: .25s; }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+.btn-ghost { border: 1px solid var(--line); color: var(--ink); background: var(--panel); }
+.btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+.social-icons { display: flex; gap: 14px; margin-top: 28px; }
+.social-icons a { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; background: #fff; box-shadow: var(--shadow); transition: .25s; }
+.social-icons a:hover { transform: translateY(-5px); }
+.social-icons img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.file-section { padding: 90px 8%; border-top: 1px solid var(--line); }
+.section-header { text-align: center; margin-bottom: 18px; }
+.section-header h1 { font-size: clamp(30px, 4vw, 42px); margin-bottom: 6px; }
+.section-header p { color: var(--muted); }
+.section-badge { display: inline-block; margin-bottom: 10px; font-weight: 700; color: var(--accent); }
+
+.toolbar { max-width: 1100px; margin: 30px auto 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.search { flex: 1 1 240px; max-width: 340px; padding: 12px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; }
+.search:focus { outline: none; border-color: var(--accent); }
+.count { color: var(--muted); font-size: 14px; }
+
+.activity-grid { max-width: 1100px; margin: 20px auto 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+.activity-card { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: var(--shadow); transition: transform .3s, border-color .3s; }
+.activity-card:hover { transform: translateY(-6px); border-color: var(--accent); }
+.card-icon { display: inline-block; align-self: flex-start; padding: 5px 14px; border-radius: 999px; margin-bottom: 16px; font-size: 13px; font-weight: 700; letter-spacing: .5px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+.activity-card h2 { font-size: 20px; margin-bottom: 6px; }
+.activity-card p { color: var(--muted); font-size: 15px; margin-bottom: 20px; flex: 1; }
+.design-button { border: none; width: 100%; padding: 12px; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer; background: var(--ink); color: var(--bg); transition: .25s; }
+.design-button:hover { background: var(--accent); color: #fff; }
+.empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 30px; }
+
+.file-list { max-width: 1100px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 12px; }
+.file-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px; background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 12px; }
+.file-information { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.file-icon { width: 50px; height: 50px; flex-shrink: 0; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; }
+.file-name { font-weight: 700; word-break: break-word; }
+.file-size { font-size: 13px; color: var(--muted); }
+.file-actions { display: flex; gap: 8px; }
+.view-button, .delete-button { border: none; padding: 9px 16px; border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; color: #fff; }
+.view-button { background: var(--accent); }
+.delete-button { background: #e5484d; }
+
+.modal { display: none; position: fixed; inset: 0; z-index: 2000; padding: 24px; align-items: center; justify-content: center; background: rgba(5, 7, 16, 0.82); backdrop-filter: blur(4px); }
+.modal-content { width: 95%; height: 95%; max-width: 1200px; display: flex; flex-direction: column; overflow: hidden; border-radius: 16px; background: var(--panel); animation: pop .25s ease both; }
+@keyframes pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+.modal-header { min-height: 60px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--ink); color: var(--bg); }
+.modal-header h2 { font-size: 18px; }
+.close-button { width: 38px; height: 38px; border: none; border-radius: 50%; font-size: 26px; cursor: pointer; background: var(--bg); color: var(--ink); }
+.preview-container { flex: 1; min-height: 0; padding: 14px; overflow: auto; display: flex; justify-content: center; align-items: center; background: var(--bg); }
+.preview-container img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; cursor: zoom-in; transition: transform .25s; }
+.preview-container img.zoomed { max-width: none; max-height: none; width: 160%; cursor: zoom-out; align-self: flex-start; }
+.preview-container iframe { width: 100%; height: 100%; min-height: 60vh; border: none; background: #fff; }
+.unsupported-preview { text-align: center; padding: 40px; }
+.open-file-button { display: inline-block; margin-top: 14px; padding: 12px 22px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; }
+
+#toTop { position: fixed; right: 24px; bottom: 24px; width: 46px; height: 46px; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; color: #fff; background: var(--accent); box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translateY(10px); transition: .3s; z-index: 900; }
+#toTop.show { opacity: 1; pointer-events: auto; transform: none; }
+
+footer { padding: 28px; text-align: center; color: var(--muted); border-top: 1px solid var(--line); }
+
+@media (max-width: 900px) {
+    .profile-container { flex-direction: column; text-align: center; gap: 36px; }
+    .profile-image { width: 280px; height: 280px; }
+    .hero-actions, .social-icons { justify-content: center; }
+}
+@media (max-width: 720px) {
+    header { flex-direction: column; padding: 12px 4%; gap: 8px; }
+    nav { flex-wrap: wrap; justify-content: center; }
+    .file-section { padding: 70px 5%; }
+    .file-card { flex-direction: column; align-items: stretch; }
+    .file-actions > * { flex: 1; }
+    .toolbar { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+
+.modal-header { flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+.modal-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.tool-btn { padding: 7px 14px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 8px; background: transparent; color: var(--bg); font: inherit; font-size: 14px; text-decoration: none; cursor: pointer; }
+.tool-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tool-btn:disabled { opacity: .35; cursor: default; }
+
+.about-grid { max-width: 1100px; margin: 30px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.about-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px; box-shadow: var(--shadow); }
+.about-card h2 { font-size: 20px; margin-bottom: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chips span { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); font-weight: 500; }
+
+#bgCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.swatches { display: flex; gap: 8px; margin-left: 12px; }
+.swatches button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--bg); outline: 1px solid var(--line); cursor: pointer; transition: transform .2s; }
+.swatches button:hover { transform: scale(1.25); }
+
+.activity-card { position: relative; overflow: hidden; }
+.activity-card::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 24%, transparent), transparent 70%); }
+.activity-card:hover::after { opacity: 1; }
+
+.stats { max-width: 1100px; margin: 24px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.stats div { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 22px; text-align: center; }
+.stats b { display: block; font-family: "Sora", sans-serif; font-size: 40px; color: var(--accent); line-height: 1.2; }
+.stats span { color: var(--muted); }
+
+
+.toast { position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); z-index: 3500; padding: 12px 22px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; box-shadow: var(--shadow); }
+
+@media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
+
+</style>
 </head>
 <body>
+<div id="progress"></div>
 
 <header>
-    <div class="logo">MY PORTFOLIO</div>
+    <div class="logo">My<b>Portfolio</b></div>
     <nav>
-        <a href="#home">HOME</a>
-        <a href="#quiz">QUIZ</a>
-        <a href="#laboratory">LABORATORY</a>
-        <a href="#exam">EXAM</a>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#laboratory">Laboratory</a>
+        <a href="#exam">Exam</a>
+        <div class="swatches" id="swatches" role="group" aria-label="Accent color">
+            <button type="button" data-a="#6d4aff" data-b="#14b8d4" aria-label="Violet" style="background:linear-gradient(135deg,#6d4aff,#14b8d4)"></button>
+            <button type="button" data-a="#e5365b" data-b="#ff9f1c" aria-label="Crimson" style="background:linear-gradient(135deg,#e5365b,#ff9f1c)"></button>
+            <button type="button" data-a="#12b76a" data-b="#22d3ee" aria-label="Green" style="background:linear-gradient(135deg,#12b76a,#22d3ee)"></button>
+            <button type="button" data-a="#2563eb" data-b="#06b6d4" aria-label="Blue" style="background:linear-gradient(135deg,#2563eb,#06b6d4)"></button>
+        </div>
+        <button type="button" id="themeToggle" aria-label="Toggle dark mode">Dark</button>
     </nav>
 </header>
 
-<!-- HOME -->
 <section id="home" class="home-section">
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
     <div class="profile-container">
         <div class="profile-image">
             <img src="Profile.jpg" alt="Ellaine Joyce Sarcaoga">
         </div>
-
         <div class="intro">
-            <span class="home-badge">WELCOME TO MY PORTFOLIO</span>
+            <span class="home-badge">Welcome to my portfolio</span>
             <h1>Hi! It's Ellaine Joyce Sarcaoga.</h1>
-            <h2>BSIT-3B</h2>
+            <h2>BSIT-3B · <span id="typed"></span><span class="cursor"></span></h2>
             <p>
-                I'm Ellaine Joyce Sarcaoga, a BSIT-3B student.
-                I love playing online games and listening to music
-                during my free time. I enjoy exploring computers and
-                technology, and my goal is to improve my skills and
-                become successful in the future.
+                I love playing online games and listening to music in my free time.
+                I enjoy exploring computers and technology, and my goal is to improve
+                my skills and become successful in the future.
             </p>
-
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#quiz">See my work</a>
+                <a class="btn btn-ghost" href="#laboratory">Laboratory files</a>
+            </div>
             <div class="social-icons">
-                <a href="#" title="Facebook">
-                    <img src="fb logo.webp" alt="Facebook">
-                </a>
-                <a href="#" title="Instagram">
-                    <img src="insta.webp" alt="Instagram">
-                </a>
+                <a href="#" title="Facebook"><img src="fb logo.webp" alt="Facebook"></a>
+                <a href="#" title="Instagram"><img src="insta.webp" alt="Instagram"></a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- QUIZ -->
-<section id="quiz" class="file-section quiz-section">
+<section id="about" class="file-section">
     <div class="section-header">
-        <span class="section-badge">📚 ACTIVITIES</span>
-        <h1>QUIZ</h1>
+        <span class="section-badge">About me</span>
+        <h1>Skills and interests</h1>
+        <p>What I work with and what I enjoy.</p>
+    </div>
+    <div class="about-grid">
+        <div class="about-card">
+            <h2>Skills</h2>
+            <div class="chips">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+            </div>
+        </div>
+        <div class="about-card">
+            <h2>Interests</h2>
+            <div class="chips">
+                <span>Online games</span>
+                <span>Music</span>
+                <span>Computers and technology</span>
+            </div>
+        </div>
+    </div>
+    <div class="stats">
+        <div><b data-count="#quizGrid">0</b><span>Quizzes</span></div>
+        <div><b data-count="#labGrid">0</b><span>Laboratory files</span></div>
+        <div><b data-count="#examGrid">0</b><span>Exams</span></div>
+    </div>
+</section>
+
+<section id="quiz" class="file-section">
+    <div class="section-header">
+        <span class="section-badge">Activities</span>
+        <h1>Quiz</h1>
         <p>Quiz files and activities.</p>
     </div>
-
-    <div class="activity-grid">
-
+    <div class="toolbar">
+        <input class="search" type="search" id="quizSearch" placeholder="Search" aria-label="Search">
+    </div>
+    <div class="activity-grid" id="quizGrid">
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>QUIZ 1</span>
-            </div>
-            <div class="activity-content">
-                <h2>Quiz 1</h2>
-                <p>View my Quiz 1 activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('Quiz 1.png', 'Quiz 1')">
-                    VIEW QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Quiz 1</h2>
+            <p>View my Quiz 1 activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('Quiz 1.png', 'Quiz 1')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>QUIZ 2</span>
-            </div>
-            <div class="activity-content">
-                <h2>Quiz 2</h2>
-                <p>View my Quiz 2 activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('quiz2.jpg', 'Quiz 2')">
-                    VIEW QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Quiz 2</h2>
+            <p>View my Quiz 2 activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('quiz2.jpg', 'Quiz 2')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>QUIZ 3</span>
-            </div>
-            <div class="activity-content">
-                <h2>Quiz 3</h2>
-                <p>View my Quiz 3 activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('quiz3.jpg', 'Quiz 3')">
-                    VIEW QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Quiz 3</h2>
+            <p>View my Quiz 3 activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('quiz3.jpg', 'Quiz 3')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>LONG QUIZ</span>
-            </div>
-            <div class="activity-content">
-                <h2>Long Quiz</h2>
-                <p>View my Long Quiz activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('longquiz.jpg', 'Long Quiz')">
-                    VIEW LONG QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Long Quiz</h2>
+            <p>View my Long Quiz activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('longquiz.jpg', 'Long Quiz')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>MIDTERM</span>
-            </div>
-            <div class="activity-content">
-                <h2>Quiz 1 Midterm</h2>
-                <p>View my Quiz 1 Midterm activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('quiz 1 midterm.png', 'Quiz 1 Midterm')">
-                    VIEW QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Quiz 1 Midterm</h2>
+            <p>View my Quiz 1 Midterm activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('quiz 1 midterm.png', 'Quiz 1 Midterm')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>MIDTERM</span>
-            </div>
-            <div class="activity-content">
-                <h2>Quiz 2 Midterm</h2>
-                <p>View my Quiz 2 Midterm activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('quiz 2 midterm.png', 'Quiz 2 Midterm')">
-                    VIEW QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Quiz 2 Midterm</h2>
+            <p>View my Quiz 2 Midterm activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('quiz 2 midterm.png', 'Quiz 2 Midterm')">View</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📝</div>
-                <span>MIDTERM</span>
-            </div>
-            <div class="activity-content">
-                <h2>Long Quiz Midterm</h2>
-                <p>View my Long Quiz Midterm activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('long quiz midterm.png', 'Long Quiz Midterm')">
-                    VIEW LONG QUIZ
-                </button>
-            </div>
+            <div class="card-icon">QUIZ</div>
+            <h2>Long Quiz Midterm</h2>
+            <p>View my Long Quiz Midterm activity.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('long quiz midterm.png', 'Long Quiz Midterm')">View</button>
         </article>
-
     </div>
 </section>
 
-<!-- LABORATORY -->
-<section id="laboratory" class="file-section laboratory-section">
+<section id="laboratory" class="file-section">
     <div class="section-header">
-        <span class="section-badge">💻 PRACTICAL WORK</span>
-        <h1>LABORATORY</h1>
+        <span class="section-badge">Practical work</span>
+        <h1>Laboratory</h1>
         <p>Laboratory activities and submitted files.</p>
     </div>
-
-    <div class="activity-grid laboratory-grid">
-
+    <div class="activity-grid" id="labGrid">
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📄</div>
-                <span>LAB ACTIVITY 1</span>
-            </div>
-            <div class="activity-content">
-                <h2>Sarcaoga_lab1.pdf</h2>
-                <p>Laboratory Activity 1</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultPDF('Sarcaoga_lab1.pdf')">
-                    VIEW PDF
-                </button>
-            </div>
+            <div class="card-icon">PDF</div>
+            <h2>Sarcaoga_lab1.pdf</h2>
+            <p>Laboratory Activity 1</p>
+            <button type="button" class="design-button" onclick="openDefaultPDF('Sarcaoga_lab1.pdf')">Open PDF</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📄</div>
-                <span>LAB ACTIVITY 2</span>
-            </div>
-            <div class="activity-content">
-                <h2>Lab-Act2.pdf</h2>
-                <p>Laboratory Activity 2</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultPDF('Lab-Act2.pdf')">
-                    VIEW PDF
-                </button>
-            </div>
+            <div class="card-icon">PDF</div>
+            <h2>Lab-Act2.pdf</h2>
+            <p>Laboratory Activity 2</p>
+            <button type="button" class="design-button" onclick="openDefaultPDF('Lab-Act2.pdf')">Open PDF</button>
         </article>
-
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">📄</div>
-                <span>LAB ACTIVITY 3</span>
-            </div>
-            <div class="activity-content">
-                <h2>Lab 3</h2>
-                <p>View my Lab activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('lab3.png', 'Lab 3')">
-                    VIEW LAB
-                </button>
-            </div>
+            <div class="card-icon">LAB</div>
+            <h2>Lab 3</h2>
+            <p>Laboratory Activity 3</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('lab3.png', 'Lab 3')">View</button>
         </article>
-
     </div>
 </section>
 
-<!-- EXAM -->
-<section id="exam" class="file-section exam-section">
+<section id="exam" class="file-section">
     <div class="section-header">
-        <span class="section-badge">🎓 ASSESSMENT</span>
-        <h1>EXAM</h1>
+        <span class="section-badge">Assessment</span>
+        <h1>Exam</h1>
         <p>Examination files and activities.</p>
     </div>
-
-    <div class="activity-grid">
-
-        <!-- PRELIM EXAM -->
+    <div class="activity-grid" id="examGrid">
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">🎓</div>
-                <span>PRELIM EXAM</span>
-            </div>
-            <div class="activity-content">
-                <h2>Exam Prelim</h2>
-                <p>View my Prelim Examination activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('exam prelim.png', 'Exam Prelim')">
-                    VIEW EXAM
-                </button>
-            </div>
+            <div class="card-icon">EXAM</div>
+            <h2>Exam Prelim</h2>
+            <p>View my Prelim Examination.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('exam prelim.png', 'Exam Prelim')">View</button>
         </article>
-
-        <!-- MIDTERM EXAM -->
         <article class="activity-card">
-            <div class="card-top">
-                <div class="card-icon">🎓</div>
-                <span>MIDTERM EXAM</span>
-            </div>
-            <div class="activity-content">
-                <h2>Exam Midterm</h2>
-                <p>View my Midterm Examination activity.</p>
-                <button type="button" class="design-button"
-                    onclick="openDefaultImage('exam midterm.png', 'Exam Midterm')">
-                    VIEW EXAM
-                </button>
-            </div>
+            <div class="card-icon">EXAM</div>
+            <h2>Exam Midterm</h2>
+            <p>View my Midterm Examination.</p>
+            <button type="button" class="design-button" onclick="openDefaultImage('exam midterm.png', 'Exam Midterm')">View</button>
         </article>
-
     </div>
 </section>
 
@@ -274,18 +364,302 @@
     <p>© 2026 Ellaine Joyce Sarcaoga | BSIT-3B</p>
 </footer>
 
-<!-- PREVIEW MODAL -->
+<button type="button" id="toTop" aria-label="Back to top">↑</button>
+
 <div id="viewModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2 id="modalTitle">File Preview</h2>
-            <button type="button" class="close-button"
-                onclick="closeModal()" aria-label="Close">×</button>
+            <button type="button" class="close-button" onclick="closeModal()" aria-label="Close">×</button>
         </div>
         <div id="previewContainer" class="preview-container"></div>
     </div>
 </div>
 
 <script src="script.js"></script>
+<script>
+/* Quiz search */
+function setupSearch() {
+    const input = document.getElementById("quizSearch");
+    const cards = [...document.querySelectorAll("#quizGrid .activity-card")];
+    const update = () => {
+        const q = input.value.trim().toLowerCase();
+        cards.forEach(card => {
+            const match = card.querySelector("h2").textContent.toLowerCase().includes(q);
+            card.style.display = match ? "" : "none";
+        });
+    };
+    input.addEventListener("input", update);
+    update();
+}
+
+/* Dark / light mode (naaalala ang pinili mo) */
+function setupTheme() {
+    const btn = document.getElementById("themeToggle");
+    const apply = t => {
+        document.documentElement.dataset.theme = t;
+        btn.textContent = t === "dark" ? "Light" : "Dark";
+    };
+    let saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (e) {}
+    apply(saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+
+    btn.addEventListener("click", () => {
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        apply(next);
+        try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+}
+
+/* Typing effect sa hero */
+function setupTyping() {
+    const el = document.getElementById("typed");
+    const words = ["IT Student", "Online Gamer", "Music Lover", "Tech Explorer"];
+    let w = 0, c = 0, deleting = false;
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        el.textContent = words.join(" · ");
+        return;
+    }
+    (function tick() {
+        const word = words[w];
+        c += deleting ? -1 : 1;
+        el.textContent = word.slice(0, c);
+        let delay = deleting ? 45 : 90;
+        if (!deleting && c === word.length) { deleting = true; delay = 1400; }
+        else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; delay = 350; }
+        setTimeout(tick, delay);
+    })();
+}
+
+/* Progress bar, active nav link, back-to-top */
+function setupScroll() {
+    const bar = document.getElementById("progress");
+    const toTop = document.getElementById("toTop");
+    const links = [...document.querySelectorAll("nav a")];
+    const sections = links.map(a => document.querySelector(a.getAttribute("href")));
+
+    const onScroll = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
+        toTop.classList.toggle("show", scrollY > 500);
+
+        let current = 0;
+        sections.forEach((s, i) => { if (s && s.getBoundingClientRect().top <= 120) current = i; });
+        links.forEach((a, i) => a.classList.toggle("active", i === current));
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+    onScroll();
+}
+
+/* Click ang larawan sa preview para mag-zoom */
+document.addEventListener("click", e => {
+    if (e.target.matches("#previewContainer img")) e.target.classList.toggle("zoomed");
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupSearch();
+    setupTheme();
+    setupTyping();
+    setupScroll();
+});
+
+/* Preview: Prev/Next, Open in new tab, Download */
+const ctx = { cards: [], i: -1 };
+document.addEventListener("click", e => {
+    const btn = e.target.closest(".design-button");
+    if (!btn) return;
+    const card = btn.closest(".activity-card");
+    ctx.cards = [...card.parentElement.querySelectorAll(".activity-card")]
+        .filter(c => c.style.display !== "none");
+    ctx.i = ctx.cards.indexOf(card);
+}, true);
+
+function step(n) {
+    const card = ctx.cards[ctx.i + n];
+    if (card) card.querySelector(".design-button").click();
+}
+
+const baseOpenPreview = openPreview;
+openPreview = function (title, type, source) {
+    baseOpenPreview(title, type, source);
+    const header = document.querySelector("#viewModal .modal-header");
+    if (!header) return;
+    const old = document.getElementById("modalTools");
+    if (old) old.remove();
+
+    const tools = document.createElement("div");
+    tools.id = "modalTools";
+    tools.className = "modal-tools";
+
+    const nav = (label, n) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tool-btn";
+        b.textContent = label;
+        b.disabled = !ctx.cards[ctx.i + n];
+        b.onclick = () => step(n);
+        return b;
+    };
+    const link = (label, download) => {
+        const a = document.createElement("a");
+        a.className = "tool-btn";
+        a.href = source;
+        a.textContent = label;
+        if (download) a.download = decodeURIComponent(source.split("/").pop());
+        else { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+        return a;
+    };
+    tools.append(nav("Prev", -1), nav("Next", 1), link("Open in new tab"), link("Download", true));
+    header.insertBefore(tools, header.querySelector(".close-button"));
+};
+
+document.addEventListener("keydown", e => {
+    if (document.getElementById("viewModal").style.display !== "flex") return;
+    if (e.key === "ArrowRight") step(1);
+    if (e.key === "ArrowLeft") step(-1);
+});
+
+</script>
+<script>
+(function () {
+    const root = document.documentElement;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = matchMedia("(hover: hover)").matches;
+
+    function toast(msg) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2600);
+    }
+
+    /* 1. Accent color switcher */
+    function setAccent(a, b) {
+        root.style.setProperty("--accent", a);
+        root.style.setProperty("--accent-2", b);
+    }
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem("accent")); } catch (e) {}
+    if (saved) setAccent(saved[0], saved[1]);
+    document.querySelectorAll("#swatches button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            saved = [btn.dataset.a, btn.dataset.b];
+            setAccent(saved[0], saved[1]);
+            try { localStorage.setItem("accent", JSON.stringify(saved)); } catch (e) {}
+        });
+    });
+
+    /* 2. Network particles sa hero */
+    const cv = document.getElementById("bgCanvas");
+    if (cv && !reduce) {
+        const c = cv.getContext("2d");
+        const hero = cv.parentElement;
+        let w, h, pts = [], mouse = null;
+        const size = () => {
+            w = cv.width = cv.offsetWidth;
+            h = cv.height = cv.offsetHeight;
+            const n = Math.round(Math.min(70, (w * h) / 20000));
+            pts = Array.from({ length: n }, () => ({
+                x: Math.random() * w, y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5
+            }));
+        };
+        size();
+        addEventListener("resize", size);
+        hero.addEventListener("mousemove", e => {
+            const r = cv.getBoundingClientRect();
+            mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+        });
+        hero.addEventListener("mouseleave", () => (mouse = null));
+
+        (function frame() {
+            if (scrollY < innerHeight) {
+                c.clearRect(0, 0, w, h);
+                const col = getComputedStyle(root).getPropertyValue("--accent").trim();
+                c.fillStyle = col;
+                c.strokeStyle = col;
+                pts.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                    c.globalAlpha = 0.7;
+                    c.beginPath(); c.arc(p.x, p.y, 2, 0, 6.283); c.fill();
+                });
+                const line = (a, b, max, k) => {
+                    const d = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (d > max) return;
+                    c.globalAlpha = (1 - d / max) * k;
+                    c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+                };
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) line(pts[i], pts[j], 130, 0.35);
+                    if (mouse) line(pts[i], mouse, 170, 0.7);
+                }
+            }
+            requestAnimationFrame(frame);
+        })();
+    }
+
+    /* 4. Stats na kusang nagbibilang ng cards */
+    document.querySelectorAll("[data-count]").forEach(el => {
+        const total = document.querySelectorAll(el.dataset.count + " .activity-card").length;
+        const io = new IntersectionObserver(entries => {
+            if (!entries[0].isIntersecting) return;
+            io.disconnect();
+            if (reduce) { el.textContent = total; return; }
+            const start = performance.now();
+            (function tick(now) {
+                const k = Math.min((now - start) / 900, 1);
+                el.textContent = Math.round(total * k);
+                if (k < 1) requestAnimationFrame(tick);
+            })(start);
+        });
+        io.observe(el);
+    });
+
+    /* 5. Spotlight at 3D tilt sa cards */
+    if (canHover) {
+        document.querySelectorAll(".activity-card").forEach(card => {
+            card.addEventListener("mouseenter", () => { card.style.transition = "transform .1s, border-color .3s"; });
+            card.addEventListener("mousemove", e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width;
+                const y = (e.clientY - r.top) / r.height;
+                card.style.setProperty("--mx", x * 100 + "%");
+                card.style.setProperty("--my", y * 100 + "%");
+                if (!reduce) card.style.transform =
+                    `perspective(800px) rotateX(${(0.5 - y) * 8}deg) rotateY(${(x - 0.5) * 8}deg) translateY(-6px)`;
+            });
+            card.addEventListener("mouseleave", () => { card.style.transform = ""; card.style.transition = ""; });
+        });
+    }
+
+    /* 6. Hidden: Konami code */
+    const seq = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
+    let pos = 0;
+    document.addEventListener("keydown", e => {
+        if (e.target.tagName === "INPUT") return;
+        const k = e.key.toLowerCase();
+        pos = k === seq[pos] ? pos + 1 : (k === seq[0] ? 1 : 0);
+        if (pos < seq.length) return;
+        pos = 0;
+        toast("Rainbow mode unlocked");
+        let hue = 0;
+        const t = setInterval(() => {
+            hue = (hue + 6) % 360;
+            setAccent(`hsl(${hue} 85% 58%)`, `hsl(${(hue + 60) % 360} 85% 58%)`);
+        }, 50);
+        setTimeout(() => {
+            clearInterval(t);
+            if (saved) setAccent(saved[0], saved[1]);
+            else { root.style.removeProperty("--accent"); root.style.removeProperty("--accent-2"); }
+        }, 6000);
+    });
+})();
+
+</script>
 </body>
 </html>
